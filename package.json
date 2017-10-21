@@ -1,0 +1,13 @@
+{
+  "name": "ess",
+  "version": "0.0.0",
+  "scripts": {
+    "build": "bsb -make-world",
+    "start": "bsb -make-world -w",
+    "clean": "bsb -clean-world"
+  },
+  "devDependencies": {
+    "bs-platform": "1.9.3"
+  },
+  "license": "MIT"
+}
