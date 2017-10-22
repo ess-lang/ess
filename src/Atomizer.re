@@ -1,9 +1,29 @@
 type color =
   | RGBA int int int int;
 
+let string_of_color color =>
+  switch color {
+  | RGBA r g b a =>
+    "rgba("
+    ^ string_of_int r
+    ^ ", "
+    ^ string_of_int g
+    ^ ", "
+    ^ string_of_int b
+    ^ ", "
+    ^ string_of_int a
+    ^ ")"
+  };
+
 type length =
   | Px float
   | Em float;
+
+let string_of_length length =>
+  switch length {
+  | Px n => string_of_float n ^ "px"
+  | Em n => string_of_float n ^ "em"
+  };
 
 type direction =
   | Top
@@ -11,9 +31,23 @@ type direction =
   | Bottom
   | Left;
 
+let string_of_direction direction =>
+  switch direction {
+  | Top => "top"
+  | Right => "right"
+  | Bottom => "bottom"
+  | Left => "left"
+  };
+
 type borderStyle =
   | None
   | Solid;
+
+let string_of_border_style borderStyle =>
+  switch borderStyle {
+  | None => "none"
+  | Solid => "solid"
+  };
 
 type declaration =
   | Color color
@@ -22,9 +56,18 @@ type declaration =
 
 let string_of_declaration decl =>
   switch decl {
-  | Color _ => "(color: _)"
-  | Border _ => "(border: _)"
-  | Background _ => "(background: _)"
+  | Color c => "(color: " ^ string_of_color c ^ ")"
+  | Border dir len bs c =>
+    "(border: "
+    ^ string_of_direction dir
+    ^ ", "
+    ^ string_of_length len
+    ^ ", "
+    ^ string_of_border_style bs
+    ^ ", "
+    ^ string_of_color c
+    ^ ")"
+  | Background c => "(background: " ^ string_of_color c ^ ")"
   };
 
 /* Set of unique declarations, constitutes a style */
@@ -36,7 +79,7 @@ module DeclarationSet = {
     };
   include S;
   let to_string set =>
-    String.concat ", " (List.map string_of_declaration (S.elements set));
+    String.concat ",\n  " (List.map string_of_declaration (S.elements set));
 };
 
 let create_style = DeclarationSet.of_list;
@@ -119,4 +162,4 @@ let atoms =
   styles |> DeclarationMap.of_styles |> AtomicDeclarationMap.of_declaration_map;
 
 AtomicDeclarationMap.iter
-  (fun _ decls => Js.log ("atom: " ^ DeclarationSet.to_string decls)) atoms;
+  (fun _ decls => Js.log ("[ " ^ DeclarationSet.to_string decls ^ " ]")) atoms;
