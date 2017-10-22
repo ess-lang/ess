@@ -2,8 +2,25 @@
   "name": "ess",
   "version": "0.1.0",
   "bsc-flags": ["-bs-super-errors"],
-  "sources": [
-    "src"
+  "sources": {
+    "dir": "src",
+    "generators" : [
+      {
+        "name": "ocamllex",
+        "edge": ["Lexer.ml", ":", "Lexer.mll"]
+    },
+        {
+            "name" : "menhir",
+            "edge" : ["Parser.ml", "Parser.mli", ":", "Parser.mly"]
+        }
+    ]
+  },
+  "generators" : [
+    { "name" : "ocamllex",
+      "command" : "ocamllex $in"
+    },
+    { "name" : "menhir" ,
+      "command" : "menhir $in" },
   ],
   "bs-dependencies" : []
 }
