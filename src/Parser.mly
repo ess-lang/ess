@@ -48,26 +48,30 @@ prop_type:
 
 class_body:
   | prop_types { Ast.ClassBody($1, []) }
-  | declaration_list { Ast.ClassBody([], $1)}
-  | prop_types declaration_list { Ast.ClassBody($1, $2) }
+  | style_list { Ast.ClassBody([], $1)}
+  | prop_types style_list { Ast.ClassBody($1, $2) }
 ;
 
-declaration_list:
-  | declaration { [$1] }
-  | declaration declaration_list { $1 :: $2 }
+style_list:
+  | style { [$1] }
+  | style style_list { $1 :: $2 }
 ;
 
-declaration:
-  | IDENTIFIER declaration_value { Ast.Declaration($1, $2) }
+style:
+  | IDENTIFIER style_value
+    { Ast.Style($1, $2) }
 ;
 
-declaration_value:
-  | IDENTIFIER { Ast.ValueLiteral($1)}
-  | PROP LBRACE pattern_declaration RBRACE { Ast.MatchValue($1, [$3])}
+style_value:
+  | IDENTIFIER
+    { Ast.ValueLiteral($1)}
+  | PROP LBRACE pattern_declaration RBRACE
+    { Ast.MatchValue($1, [$3])}
 ;
 
 pattern_declaration:
-  | IDENTIFIER ARROW IDENTIFIER { Ast.PatternDeclaration($1, $3) }
+  | IDENTIFIER ARROW IDENTIFIER
+    { Ast.PatternDeclaration($1, $3) }
 ;
 
 %%

@@ -4,12 +4,12 @@ type classProptype =
 type patternDeclaration =
   | PatternDeclaration(string, string);
 
-type declarationValue =
+type styleValue =
   | ValueLiteral(string)
   | MatchValue(string, list(patternDeclaration));
 
 type classBlockItem =
-  | Declaration(string, declarationValue);
+  | Style(string, styleValue);
 
 type classBody =
   | ClassBody(list(classProptype), list(classBlockItem));
