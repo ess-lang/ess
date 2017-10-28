@@ -2,7 +2,7 @@
 
 %}
 
-%token LBRACE RBRACE EOF VARDEC LPAREN RPAREN PIXEL COLOR_SHORTHEX COLOR_HEX
+%token LBRACE RBRACE EOF VARDEC LPAREN RPAREN PIXEL COLOR_SHORTHEX COLOR_HEX ARROW
 %token <string>IDENTIFIER
 %token <string>PROP
 
@@ -42,7 +42,14 @@ declist: decl { [$1] }
        | decl declist { $1 :: $2 }
        ;
 
-decl: IDENTIFIER IDENTIFIER { Ast.Declaration($1, $2) }
+decl: IDENTIFIER declvalue { Ast.Declaration($1, $2) }
     ;
+
+declvalue: IDENTIFIER { Ast.ValueLiteral($1)}
+  | PROP LBRACE patterndecl RBRACE { Ast.MatchValue($1, [$3])}
+  ;
+
+patterndecl : IDENTIFIER ARROW IDENTIFIER { Ast.PatternDeclaration($1, $3) }
+
 
 %%

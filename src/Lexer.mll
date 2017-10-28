@@ -14,6 +14,7 @@ rule token = parse
   | ['0'-'9']+ "px" { PIXEL }
   | '#' hex hex hex { COLOR_SHORTHEX }
   | '#' hex hex hex hex hex hex { COLOR_HEX }
+  | '=' '>' { ARROW }
   | '{' { LBRACE }
   | '}'  { RBRACE }
   | '(' { LPAREN }
