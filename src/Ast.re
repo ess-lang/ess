@@ -1,14 +1,14 @@
 type classProptype =
-  | Proptype string string;
+  | Proptype(string, string);
 
 type classBlockItem =
-  | Declaration string string;
+  | Declaration(string, string);
 
 type classBody =
-  | ClassBody (list classProptype) (list classBlockItem);
+  | ClassBody(list(classProptype), list(classBlockItem));
 
 type statement =
-  | ClassDeclaration string classBody
+  | ClassDeclaration(string, classBody)
   | VariableDeclaration;
 
-type program = list statement;
+type program = list(statement);

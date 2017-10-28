@@ -1,6 +1,7 @@
 {
   "name": "ess",
   "version": "0.1.0",
+  "refmt": 3,
   "bsc-flags": ["-bs-super-errors"],
   "sources": {
     "dir": "src",
@@ -8,11 +9,11 @@
       {
         "name": "ocamllex",
         "edge": ["Lexer.ml", ":", "Lexer.mll"]
-    },
-        {
-            "name" : "menhir",
-            "edge" : ["Parser.ml", "Parser.mli", ":", "Parser.mly"]
-        }
+      },
+      {
+        "name" : "menhir",
+        "edge" : ["Parser.ml", "Parser.mli", ":", "Parser.mly"]
+      }
     ]
   },
   "generators" : [
