@@ -29,7 +29,7 @@ program:
 
 _statement:
   | _class { $1 }
-  | VARDEC { Ast.VariableDeclaration }
+  | VARDEC { Ast.VariableDeclaration("some-var", Ast.Px(20.0)) }
 ;
 
 _class:
@@ -43,35 +43,30 @@ prop_types:
 ;
 
 prop_type:
-  | PROP IDENTIFIER { Ast.Proptype($1, $2) }
+  | PROP IDENTIFIER { Ast.ClassPropDeclaration($1, $2) }
 ;
 
 class_body:
   | prop_types { Ast.ClassBody($1, []) }
-  | style_list { Ast.ClassBody([], $1)}
-  | prop_types style_list { Ast.ClassBody($1, $2) }
+  | style_block { Ast.ClassBody([], $1)}
+  | prop_types style_block { Ast.ClassBody($1, $2) }
 ;
 
-style_list:
-  | style { [$1] }
-  | style style_list { $1 :: $2 }
+style_block:
+  | style_expression { [$1] }
+  | style_expression style_block { $1 :: $2 }
 ;
 
-style:
-  | IDENTIFIER style_value
-    { Ast.Style($1, $2) }
-;
-
-style_value:
-  | IDENTIFIER
-    { Ast.ValueLiteral($1)}
-  | PROP LBRACE pattern_declaration RBRACE
-    { Ast.MatchValue($1, [$3])}
+style_expression:
+  | IDENTIFIER IDENTIFIER
+    { Ast.StyleExpression(Ast.Style(Ast.ColorProperty, Ast.StringLiteral($2))) }
+  | IDENTIFIER PROP LBRACE pattern_declaration RBRACE
+    { Ast.MatchValueExpression(Ast.ColorProperty, [Ast.Argument($2)], [$4]) }
 ;
 
 pattern_declaration:
   | IDENTIFIER ARROW IDENTIFIER
-    { Ast.PatternDeclaration($1, $3) }
+    { Ast.MatchValueClause([Ast.StringPattern([$1])], Ast.StringLiteral($3)) }
 ;
 
 %%
