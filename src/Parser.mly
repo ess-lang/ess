@@ -3,6 +3,7 @@
 %token VARDEC
 %token LPAREN
 %token RPAREN
+%token NEWLINE
 %token PIXEL
 %token COLOR_SHORTHEX
 %token COLOR_HEX
@@ -23,8 +24,8 @@ input:
 ;
 
 program:
-  | _statement { [$1] }
-  | _statement program { $1 :: $2 }
+  | _statement NEWLINE* { [$1] }
+  | _statement NEWLINE+ program { $1 :: $3 }
 ;
 
 _statement:
@@ -33,8 +34,8 @@ _statement:
 ;
 
 _class:
-  | IDENTIFIER LBRACE class_body RBRACE
-    { Ast.ClassDeclaration($1, $3) }
+  | IDENTIFIER LBRACE NEWLINE* class_body RBRACE
+    { Ast.ClassDeclaration($1, $4) }
 ;
 
 prop_types:
@@ -49,12 +50,12 @@ prop_type:
 class_body:
   | prop_types { Ast.ClassBody($1, []) }
   | style_block { Ast.ClassBody([], $1)}
-  | prop_types style_block { Ast.ClassBody($1, $2) }
+  | prop_types NEWLINE+ style_block { Ast.ClassBody($1, $3) }
 ;
 
 style_block:
-  | style_expression { [$1] }
-  | style_expression style_block { $1 :: $2 }
+  | style_expression NEWLINE* { [$1] }
+  | style_expression NEWLINE+ style_block { $1 :: $3 }
 ;
 
 style_expression:

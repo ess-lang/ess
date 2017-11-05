@@ -8,6 +8,7 @@ let digit = ['0'-'9']
 let hex = ['A'-'F' 'a'-'f' '0'-'9']
 
 rule token = parse
+  | '\n' { NEWLINE }
   | [' ' '\t'] { token lexbuf }
   | '@' ['a'-'z']+ { PROP (get lexbuf)}
   | ['a'-'z']+    { IDENTIFIER (get lexbuf) }

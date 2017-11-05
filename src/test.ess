@@ -1,0 +1,13 @@
+VARDEC
+VARDEC
+
+zz {
+
+@haha woo
+color red
+
+background green
+
+color @yo { big => blue}
+
+}
