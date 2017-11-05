@@ -8,6 +8,7 @@ color red
 
 background green
 
-color @yo { big => blue}
+color @yo { big => #FF0 }
+color @ba { big => #cc00cc }
 
 }

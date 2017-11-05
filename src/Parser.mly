@@ -5,8 +5,8 @@
 %token RPAREN
 %token NEWLINE
 %token PIXEL
-%token COLOR_SHORTHEX
-%token COLOR_HEX
+%token <int * int * int>COLOR_SHORTHEX
+%token <int * int * int>COLOR_HEX
 %token ARROW
 %token <string>IDENTIFIER
 %token <string>PROP
@@ -68,6 +68,10 @@ style_expression:
 pattern_declaration:
   | IDENTIFIER ARROW IDENTIFIER
     { Ast.MatchValueClause([Ast.StringPattern([$1])], Ast.StringLiteral($3)) }
+  | IDENTIFIER ARROW COLOR_HEX
+    { Ast.MatchValueClause([Ast.StringPattern([$1])], Ast.ColorRGB($3)) }
+  | IDENTIFIER ARROW COLOR_SHORTHEX
+    { Ast.MatchValueClause([Ast.StringPattern([$1])], Ast.ColorRGB($3)) }
 ;
 
 %%

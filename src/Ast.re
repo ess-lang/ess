@@ -31,6 +31,8 @@ and style_value =
   | Px(float)
   | Em(float)
   | StringLiteral(string)
+  | ColorRGB((int, int, int))
+  | ColorNamed(string)
   | VariableReference
   | ValueExpression
 and pattern =
