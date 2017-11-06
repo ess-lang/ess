@@ -22,9 +22,7 @@ Blah {
     sm => [
       color red
     ]
-    md => [
-      color green
-    ]
+    md => color green
   }
 }
 
