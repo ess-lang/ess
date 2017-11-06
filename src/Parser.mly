@@ -58,20 +58,24 @@ style_block:
   | style_expression NEWLINE+ style_block { $1 :: $3 }
 ;
 
+style_value:
+  | COLOR_HEX { Ast.ColorRGB($1) }
+  | COLOR_SHORTHEX { Ast.ColorRGB($1) }
+  | IDENTIFIER { Ast.StringLiteral($1) }
+;
+
 style_expression:
-  | IDENTIFIER IDENTIFIER
-    { Ast.StyleExpression(Ast.Style(Ast.ColorProperty, Ast.StringLiteral($2))) }
+  | IDENTIFIER style_value
+    { Ast.StyleExpression(Ast.Style(Ast.ColorProperty, $2)) }
   | IDENTIFIER PROP LBRACE pattern_declaration RBRACE
     { Ast.MatchValueExpression(Ast.ColorProperty, [Ast.Argument($2)], [$4]) }
 ;
 
 pattern_declaration:
-  | IDENTIFIER ARROW IDENTIFIER
-    { Ast.MatchValueClause([Ast.StringPattern([$1])], Ast.StringLiteral($3)) }
-  | IDENTIFIER ARROW COLOR_HEX
-    { Ast.MatchValueClause([Ast.StringPattern([$1])], Ast.ColorRGB($3)) }
-  | IDENTIFIER ARROW COLOR_SHORTHEX
-    { Ast.MatchValueClause([Ast.StringPattern([$1])], Ast.ColorRGB($3)) }
+  | IDENTIFIER ARROW style_value
+    { Ast.MatchValueClause([Ast.StringPattern([$1])], $3) }
+  | IDENTIFIER ARROW style_value
+    { Ast.MatchValueClause([Ast.StringPattern([$1])], $3) }
 ;
 
 %%
