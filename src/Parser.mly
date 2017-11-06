@@ -70,8 +70,12 @@ style_value:
 
 style_expression:
   | base_style_thing { Ast.StyleExpression($1) }
+  | PROP LBRACE NEWLINE* RBRACE
+    { Ast.MatchBlockExpression([Ast.Argument($1)], []) }
   | PROP LBRACE NEWLINE+ match_block_body RBRACE
     { Ast.MatchBlockExpression([Ast.Argument($1)], $4) }
+  | IDENTIFIER PROP LBRACE NEWLINE* RBRACE
+    { Ast.MatchValueExpression(Ast.ColorProperty, [Ast.Argument($2)], []) }
   | IDENTIFIER PROP LBRACE NEWLINE+ match_value_body RBRACE
     { Ast.MatchValueExpression(Ast.ColorProperty, [Ast.Argument($2)], $5) }
 ;
