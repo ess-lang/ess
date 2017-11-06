@@ -97,6 +97,8 @@ match_value_clause:
 ;
 
 match_block_clause:
+  | IDENTIFIER ARROW LBRACKET NEWLINE* RBRACKET
+    { Ast.MatchBlockClause([Ast.StringPattern([$1])], []) }
   | IDENTIFIER ARROW LBRACKET NEWLINE* match_block_clause_body RBRACKET
     { Ast.MatchBlockClause([Ast.StringPattern([$1])], $5) }
   | IDENTIFIER ARROW base_style_thing

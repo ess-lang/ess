@@ -23,6 +23,7 @@ Blah {
       color red
     ]
     md => color green
+    xl => []
   }
 }
 
