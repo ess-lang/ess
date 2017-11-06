@@ -6,6 +6,7 @@
 %token LBRACKET
 %token RBRACKET
 %token NEWLINE
+%token RANGE
 %token PIXEL
 %token <int * int * int>COLOR_SHORTHEX
 %token <int * int * int>COLOR_HEX
@@ -96,17 +97,22 @@ match_value_body:
 ;
 
 match_value_clause:
-  | IDENTIFIER ARROW style_value
-    { Ast.MatchValueClause([Ast.StringPattern([$1])], $3) }
+  | pattern ARROW style_value
+    { Ast.MatchValueClause($1, $3) }
 ;
 
 match_block_clause:
-  | IDENTIFIER ARROW LBRACKET NEWLINE* RBRACKET
-    { Ast.MatchBlockClause([Ast.StringPattern([$1])], []) }
-  | IDENTIFIER ARROW LBRACKET NEWLINE* match_block_clause_body RBRACKET
-    { Ast.MatchBlockClause([Ast.StringPattern([$1])], $5) }
-  | IDENTIFIER ARROW base_style_thing
-    { Ast.MatchBlockClause([Ast.StringPattern([$1])], [$3]) }
+  | pattern ARROW LBRACKET NEWLINE* RBRACKET
+    { Ast.MatchBlockClause($1, []) }
+  | pattern ARROW LBRACKET NEWLINE* match_block_clause_body RBRACKET
+    { Ast.MatchBlockClause($1, $5) }
+  | pattern ARROW base_style_thing
+    { Ast.MatchBlockClause($1, [$3]) }
+;
+
+pattern:
+  | IDENTIFIER { [Ast.StringPattern([$1])] }
+  | RANGE { [Ast.NumberRangePattern(5, 25)] }
 ;
 
 match_block_clause_body:

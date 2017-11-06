@@ -4,6 +4,7 @@ VARDEC
 zz {
 
   @haha woo
+
   color #ff33aa
 
   background green
@@ -25,6 +26,13 @@ Blah {
     ]
     md => color green
     xl => []
+  }
+
+  @doh {}
+
+  @neat {
+    25..500 => []
+    500..750 => []
   }
 }
 
