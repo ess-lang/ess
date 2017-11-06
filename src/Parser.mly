@@ -3,6 +3,8 @@
 %token VARDEC
 %token LPAREN
 %token RPAREN
+%token LBRACKET
+%token RBRACKET
 %token NEWLINE
 %token PIXEL
 %token <int * int * int>COLOR_SHORTHEX
@@ -36,6 +38,8 @@ _statement:
 _class:
   | IDENTIFIER LBRACE NEWLINE* class_body RBRACE
     { Ast.ClassDeclaration($1, $4) }
+  | IDENTIFIER LBRACE NEWLINE* RBRACE
+    { Ast.ClassDeclaration($1, Ast.ClassBody([], [])) }
 ;
 
 prop_types:
@@ -65,17 +69,41 @@ style_value:
 ;
 
 style_expression:
-  | IDENTIFIER style_value
-    { Ast.StyleExpression(Ast.Style(Ast.ColorProperty, $2)) }
-  | IDENTIFIER PROP LBRACE pattern_declaration RBRACE
-    { Ast.MatchValueExpression(Ast.ColorProperty, [Ast.Argument($2)], [$4]) }
+  | base_style_thing { Ast.StyleExpression($1) }
+  | PROP LBRACE NEWLINE+ match_block_body RBRACE
+    { Ast.MatchBlockExpression([Ast.Argument($1)], $4) }
+  | IDENTIFIER PROP LBRACE NEWLINE+ match_value_body RBRACE
+    { Ast.MatchValueExpression(Ast.ColorProperty, [Ast.Argument($2)], $5) }
 ;
 
-pattern_declaration:
+base_style_thing:
+  | IDENTIFIER style_value
+    { Ast.Style(Ast.ColorProperty, $2) }
+;
+
+match_block_body:
+  | match_block_clause NEWLINE* { [$1] }
+  | match_block_clause NEWLINE+ match_block_body { $1 :: $3 }
+;
+
+match_value_body:
+  | match_value_clause NEWLINE* { [$1] }
+  | match_value_clause NEWLINE+ match_value_body { $1 :: $3 }
+;
+
+match_value_clause:
   | IDENTIFIER ARROW style_value
     { Ast.MatchValueClause([Ast.StringPattern([$1])], $3) }
-  | IDENTIFIER ARROW style_value
-    { Ast.MatchValueClause([Ast.StringPattern([$1])], $3) }
+;
+
+match_block_clause:
+  | IDENTIFIER ARROW LBRACKET NEWLINE* match_block_clause_body RBRACKET
+    { Ast.MatchBlockClause([Ast.StringPattern([$1])], $5) }
+;
+
+match_block_clause_body:
+  | base_style_thing NEWLINE* { [$1] }
+  | base_style_thing NEWLINE+ match_block_clause_body { $1 :: $3 }
 ;
 
 %%

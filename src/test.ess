@@ -3,12 +3,31 @@ VARDEC
 
 zz {
 
-@haha woo
-color #ff33aa
+  @haha woo
+  color #ff33aa
 
-background green
+  background green
 
-color @yo { big => #FF0 }
-color @ba { big => #cc00cc }
+  color @yo {
+    big => #FF0
+  }
+  color @ba {
+    big => #cc00cc
+  }
+
+}
+
+Blah {
+  @blah {
+    sm => [
+      color red
+    ]
+    md => [
+      color green
+    ]
+  }
+}
+
+qq {
 
 }

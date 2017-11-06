@@ -23,6 +23,8 @@ rule token = parse
   | '=' '>' { ARROW }
   | '{' { LBRACE }
   | '}'  { RBRACE }
+  | '[' { LBRACKET }
+  | ']' { RBRACKET }
   | '(' { LPAREN }
   | ')' { RPAREN }
   | _  { token lexbuf }
