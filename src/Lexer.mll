@@ -17,6 +17,7 @@ let hex = ['A'-'F' 'a'-'f' '0'-'9']
 
 rule token = parse
   | '\n' { NEWLINE }
+  | "/*"  { comment lexbuf; token lexbuf }
   | [' ' '\t'] { token lexbuf }
   | '@' (['a'-'z']+ as id) { PROP (id)}
   | "boolean" { BOOLEAN }
@@ -43,3 +44,9 @@ rule token = parse
   | _  { token lexbuf }
   | "VARDEC" { VARDEC }
   | eof      { EOF }
+
+and comment = parse
+    | "/*"          { comment lexbuf; comment lexbuf }
+    | "*/"          { () }
+    | _             { comment lexbuf }
+    | eof           { failwith "lexer: comment not terminated" }

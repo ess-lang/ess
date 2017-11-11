@@ -54,7 +54,7 @@ _class:
 ;
 
 class_body:
-  | bb = body_block? { Ast.ClassBody(list_maybe(bb))}
+  | body_block? { Ast.ClassBody(list_maybe($1))}
 ;
 
 body_block:
