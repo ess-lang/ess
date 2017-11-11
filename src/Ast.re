@@ -1,4 +1,5 @@
-type stylesheet = list(statement)
+type stylesheet =
+  | Stylesheet(list(statement))
 and statement =
   | ClassDeclaration(string, class_body)
   | VariableDeclaration(string, style_value)
@@ -45,3 +46,19 @@ and pattern =
   | NumberRangePattern((int, option(int)))
   | StringPattern(list(string))
   | FallthroughPattern;
+/* let string_of_statement = (n) =>
+     switch n {
+     | ClassDeclaration(x, y) => "classdecl"
+     | VariableDeclaration(x, y) => "variable"
+     };
+
+   let rec string_of_statement_list = (n) =>
+     switch n {
+     | [] => "empty"
+     | [a, ...rest] => string_of_statement(a) ++ string_of_statement_list(rest)
+     };
+
+   let string_of_stylesheet = (n) =>
+     switch n {
+     | Stylesheet(x) => string_of_statement_list(x)
+     }; */

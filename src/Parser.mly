@@ -30,12 +30,12 @@ open Utils
 %token EOF
 
 %start input
-%type <unit> input
+%type <Ast.stylesheet> input
 
 %%
 
 input:
-  | NEWLINE* s = program EOF { Js.log @@ Js.Json.stringifyAny s }
+  | NEWLINE* s = program EOF { Ast.Stylesheet s }
 
 program:
   | sl = statement_list? { list_maybe sl }
