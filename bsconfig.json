@@ -26,7 +26,7 @@
       "command" : "ocamllex $in"
     },
     { "name" : "menhir" ,
-      "command" : "menhir $in" },
+      "command" : "menhir --explain $in" },
   ],
   "bs-dependencies" : [],
   "bs-dev-dependencies": [
