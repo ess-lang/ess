@@ -19,6 +19,17 @@ let alpha = ['A'-'Z' 'a'-'z']
 
 rule token = parse
   | '\n' { NEWLINE }
+  | '_' { UNDERSCORE }
+  | '=' '>' { ARROW }
+  | '=' { EQ }
+  | ',' { COMMA }
+  | '{' { LBRACE }
+  | '}'  { RBRACE }
+  | '[' { LBRACKET }
+  | ']' { RBRACKET }
+  | '(' { LPAREN }
+  | ')' { RPAREN }
+  | '|' { PIPE }
   | "VARDEC" { VARDEC }
   | "/*"  { comment lexbuf; token lexbuf }
   | [' ' '\t'] { token lexbuf }
@@ -35,15 +46,6 @@ rule token = parse
     { COLOR_SHORTHEX(hex2_to_int r, hex2_to_int g, hex2_to_int b) }
   | '#' (hex as r1) (hex as r2) (hex as g1) (hex as g2) (hex as b1) (hex as b2)
     { COLOR_HEX(hex_to_int r1 r2, hex_to_int g1 g2, hex_to_int b1 b2) }
-  | '=' '>' { ARROW }
-  | '=' { EQ }
-  | '{' { LBRACE }
-  | '}'  { RBRACE }
-  | '[' { LBRACKET }
-  | ']' { RBRACKET }
-  | '(' { LPAREN }
-  | ')' { RPAREN }
-  | '|' { PIPE }
   | _  { token lexbuf }
   | eof      { EOF }
 

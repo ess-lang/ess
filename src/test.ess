@@ -26,12 +26,13 @@ Foo [
 /* One line block comment */
 
 Bar [
-  @blah {
-    "sm" => [
+  (@blah, @yeah) {
+    ("sm", 25..100) => [
       color red
     ]
-    "md" => color green
-    "xl" => []
+    ("md", 100..200) => color green
+    ("xl", 200..300) => []
+    (_, _) => []
   }
 
   @doh {}

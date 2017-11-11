@@ -11,10 +11,12 @@ open Utils
 %token RPAREN
 %token LBRACKET
 %token RBRACKET
+%token COMMA
 %token PIPE
 %token BOOLEAN
 %token TRUE FALSE
 %token NEWLINE
+%token UNDERSCORE
 %token EQ
 %token <int * int option>RANGE
 %token PIXEL
@@ -75,14 +77,21 @@ style_value:
 body_expression:
   | prop_type { $1 }
   | base_style_thing { Ast.StyleExpression($1) }
-  | PROP LBRACE NEWLINE* RBRACE
-    { Ast.MatchBlockExpression([Ast.Argument($1)], []) }
-  | PROP LBRACE NEWLINE+ match_block_body RBRACE
-    { Ast.MatchBlockExpression([Ast.Argument($1)], $4) }
-  | IDENTIFIER PROP LBRACE NEWLINE* RBRACE
-    { Ast.MatchValueExpression(Ast.ColorProperty, [Ast.Argument($2)], []) }
-  | IDENTIFIER PROP LBRACE NEWLINE+ match_value_body RBRACE
-    { Ast.MatchValueExpression(Ast.ColorProperty, [Ast.Argument($2)], $5) }
+  | prop_arguments LBRACE NEWLINE* RBRACE
+    { Ast.MatchBlockExpression($1, []) }
+  | prop_arguments LBRACE NEWLINE+ match_block_body RBRACE
+    { Ast.MatchBlockExpression($1, $4) }
+  | IDENTIFIER prop_arguments LBRACE NEWLINE* RBRACE
+    { Ast.MatchValueExpression(Ast.ColorProperty, $2, []) }
+  | IDENTIFIER prop_arguments LBRACE NEWLINE+ match_value_body RBRACE
+    { Ast.MatchValueExpression(Ast.ColorProperty, $2, $5) }
+
+prop_arguments:
+  | prop_val { [$1] }
+  | delimited(LPAREN, separated_nonempty_list(COMMA, prop_val), RPAREN) { $1 }
+
+prop_val:
+  | PROP { Ast.Argument($1) }
 
 base_style_thing:
   | IDENTIFIER style_value
@@ -97,22 +106,28 @@ match_value_body:
   | match_value_clause NEWLINE+ match_value_body { $1 :: $3 }
 
 match_value_clause:
-  | pattern ARROW style_value
+  | pattern_def ARROW style_value
     { Ast.MatchValueClause($1, $3) }
 
 match_block_clause:
-  | pattern ARROW LBRACKET NEWLINE* RBRACKET
+  | pattern_def ARROW LBRACKET NEWLINE* RBRACKET
     { Ast.MatchBlockClause($1, []) }
-  | pattern ARROW LBRACKET NEWLINE* match_block_clause_body RBRACKET
+  | pattern_def ARROW LBRACKET NEWLINE* match_block_clause_body RBRACKET
     { Ast.MatchBlockClause($1, $5) }
-  | pattern ARROW base_style_thing
+  | pattern_def ARROW base_style_thing
     { Ast.MatchBlockClause($1, [$3]) }
+
+pattern_def:
+  | pattern { [$1] }
+  | yo = delimited(LPAREN, separated_nonempty_list(COMMA, pattern), RPAREN) { yo }
 
 pattern:
   | ls = separated_nonempty_list(PIPE, STRING)
-    { [Ast.StringPattern(ls)] }
+    { Ast.StringPattern(ls) }
   | RANGE
-    { [Ast.NumberRangePattern($1)] }
+    { Ast.NumberRangePattern($1) }
+  | UNDERSCORE
+    { Ast.FallthroughPattern }
 
 match_block_clause_body:
   | base_style_thing NEWLINE* { [$1] }

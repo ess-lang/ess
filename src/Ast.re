@@ -41,4 +41,5 @@ and style_value =
 and pattern =
   | NumberPattern(int)
   | NumberRangePattern((int, option(int)))
-  | StringPattern(list(string));
+  | StringPattern(list(string))
+  | FallthroughPattern;
