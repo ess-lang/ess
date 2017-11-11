@@ -1,3 +1,9 @@
+%{
+
+open Utils
+
+%}
+
 %token LBRACE
 %token RBRACE
 %token VARDEC
@@ -5,7 +11,11 @@
 %token RPAREN
 %token LBRACKET
 %token RBRACKET
+%token PIPE
+%token BOOLEAN
+%token TRUE FALSE
 %token NEWLINE
+%token EQ
 %token <int * int option>RANGE
 %token PIXEL
 %token <int * int * int>COLOR_SHORTHEX
@@ -13,6 +23,7 @@
 %token ARROW
 %token <string>IDENTIFIER
 %token <string>PROP
+%token <string>STRING
 
 %token EOF
 
@@ -22,14 +33,15 @@
 %%
 
 input:
-  | EOF { Js.log "nothing"}
-  | program EOF { Js.log @@ Js.Json.stringifyAny $1 }
-;
+  | NEWLINE* s = program EOF { Js.log @@ Js.Json.stringifyAny s }
 
 program:
-  | _statement NEWLINE* { [$1] }
-  | _statement NEWLINE+ program { $1 :: $3 }
+  | sl = statement_list? { list_maybe sl }
 ;
+
+statement_list:
+  | _statement NEWLINE* { [$1] }
+  | _statement NEWLINE+ statement_list { $1 :: $3 }
 
 _statement:
   | _class { $1 }
@@ -37,30 +49,29 @@ _statement:
 ;
 
 _class:
-  | IDENTIFIER LBRACE NEWLINE* class_body RBRACE
-    { Ast.ClassDeclaration($1, $4) }
-  | IDENTIFIER LBRACE NEWLINE* RBRACE
-    { Ast.ClassDeclaration($1, Ast.ClassBody([], [])) }
-;
-
-prop_types:
-  | prop_type { [$1] }
-  | prop_type prop_types { $1 :: $2}
-;
-
-prop_type:
-  | PROP IDENTIFIER { Ast.ClassPropDeclaration($1, $2) }
+  | id = IDENTIFIER LBRACKET NEWLINE* cb = class_body RBRACKET
+    { Ast.ClassDeclaration(id, cb) }
 ;
 
 class_body:
-  | prop_types { Ast.ClassBody($1, []) }
-  | style_block { Ast.ClassBody([], $1)}
-  | prop_types NEWLINE+ style_block { Ast.ClassBody($1, $3) }
+  | bb = body_block? { Ast.ClassBody(list_maybe(bb))}
 ;
 
-style_block:
-  | style_expression NEWLINE* { [$1] }
-  | style_expression NEWLINE+ style_block { $1 :: $3 }
+body_block:
+  | body_expression NEWLINE* { [$1] }
+  | body_expression NEWLINE+ body_block { $1 :: $3 }
+;
+
+prop_type:
+  | p = PROP EQ ptv = prop_type_value
+    { Ast.ClassPropDeclaration(Ast.Argument(p), ptv) }
+;
+
+prop_type_value:
+  | ls = separated_nonempty_list(PIPE, STRING)
+    { Ast.StringEnumType(ls) }
+  | BOOLEAN
+    { Ast.BooleanType }
 ;
 
 style_value:
@@ -69,7 +80,8 @@ style_value:
   | IDENTIFIER { Ast.StringLiteral($1) }
 ;
 
-style_expression:
+body_expression:
+  | prop_type { $1 }
   | base_style_thing { Ast.StyleExpression($1) }
   | PROP LBRACE NEWLINE* RBRACE
     { Ast.MatchBlockExpression([Ast.Argument($1)], []) }
@@ -111,8 +123,10 @@ match_block_clause:
 ;
 
 pattern:
-  | IDENTIFIER { [Ast.StringPattern([$1])] }
-  | RANGE { [Ast.NumberRangePattern($1)] }
+  | ls = separated_nonempty_list(PIPE, STRING)
+    { [Ast.StringPattern(ls)] }
+  | RANGE
+    { [Ast.NumberRangePattern($1)] }
 ;
 
 match_block_clause_body:

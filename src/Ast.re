@@ -3,8 +3,9 @@ and statement =
   | ClassDeclaration(string, class_body)
   | VariableDeclaration(string, style_value)
 and class_body =
-  | ClassBody(list(class_prop_declaration), list(class_body_expression))
+  | ClassBody(list(class_body_expression))
 and class_body_expression =
+  | ClassPropDeclaration(argument, prop_value_type)
   | StyleExpression(style)
   | MatchBlockExpression(list(argument), list(match_block_clause))
   | MatchValueExpression(
@@ -18,8 +19,10 @@ and match_value_clause =
   | MatchValueClause(list(pattern), style_value)
 and style =
   | Style(style_property, style_value)
-and class_prop_declaration =
-  | ClassPropDeclaration(string, string)
+and prop_value_type =
+  | StringEnumType(list(string))
+  | BooleanType
+  | NumberType
 and argument =
   | Argument(string)
 and style_property =

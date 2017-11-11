@@ -18,7 +18,11 @@ let hex = ['A'-'F' 'a'-'f' '0'-'9']
 rule token = parse
   | '\n' { NEWLINE }
   | [' ' '\t'] { token lexbuf }
-  | '@' ['a'-'z']+ { PROP (get lexbuf)}
+  | '@' (['a'-'z']+ as id) { PROP (id)}
+  | "boolean" { BOOLEAN }
+  | "false" { FALSE }
+  | "true" { TRUE }
+  | '"' (['a'-'z']+ as str) '"' { STRING(str) }
   | ['a'-'z']+    { IDENTIFIER (get lexbuf) }
   | ['0'-'9']+ "px" { PIXEL }
   | (['0'-'9']+ as start_num)'.' '.' (['0'-'9']* as end_num)
@@ -28,12 +32,14 @@ rule token = parse
   | '#' (hex as r1) (hex as r2) (hex as g1) (hex as g2) (hex as b1) (hex as b2)
     { COLOR_HEX(hex_to_int r1 r2, hex_to_int g1 g2, hex_to_int b1 b2) }
   | '=' '>' { ARROW }
+  | '=' { EQ }
   | '{' { LBRACE }
   | '}'  { RBRACE }
   | '[' { LBRACKET }
   | ']' { RBRACKET }
   | '(' { LPAREN }
   | ')' { RPAREN }
+  | '|' { PIPE }
   | _  { token lexbuf }
   | "VARDEC" { VARDEC }
   | eof      { EOF }

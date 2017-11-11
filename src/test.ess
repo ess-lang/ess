@@ -1,31 +1,30 @@
+
+
 VARDEC
 VARDEC
 
-zz {
-
-  @haha woo
+Foo [
+  @size = "sm" | "md" | "lg"
+  @dark = boolean
 
   color #ff33aa
-
   background green
-
   color @yo {
-    big => #FF0
+    "sm" | "md" => #FF0
   }
   color @ba {
-    big => #cc00cc
+    "lg" => #cc00cc
   }
   color @qq {}
+]
 
-}
-
-Blah {
+Bar [
   @blah {
-    sm => [
+    "sm" => [
       color red
     ]
-    md => color green
-    xl => []
+    "md" => color green
+    "xl" => []
   }
 
   @doh {}
@@ -33,10 +32,5 @@ Blah {
   @neat {
     25..500 => []
     500..750 => []
-    750.. => []
   }
-}
-
-qq {
-
-}
+]
