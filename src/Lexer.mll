@@ -15,8 +15,11 @@ let digit = ['0'-'9']
 
 let hex = ['A'-'F' 'a'-'f' '0'-'9']
 
+let alpha = ['A'-'Z' 'a'-'z']
+
 rule token = parse
   | '\n' { NEWLINE }
+  | "VARDEC" { VARDEC }
   | "/*"  { comment lexbuf; token lexbuf }
   | [' ' '\t'] { token lexbuf }
   | '@' (['a'-'z']+ as id) { PROP (id)}
@@ -24,7 +27,7 @@ rule token = parse
   | "false" { FALSE }
   | "true" { TRUE }
   | '"' (['a'-'z']+ as str) '"' { STRING(str) }
-  | ['a'-'z']+    { IDENTIFIER (get lexbuf) }
+  | alpha+    { IDENTIFIER (get lexbuf) }
   | ['0'-'9']+ "px" { PIXEL }
   | (['0'-'9']+ as start_num)'.' '.' (['0'-'9']* as end_num)
     { RANGE(int_of_string start_num, int_of_maybe_string end_num) }
@@ -42,7 +45,6 @@ rule token = parse
   | ')' { RPAREN }
   | '|' { PIPE }
   | _  { token lexbuf }
-  | "VARDEC" { VARDEC }
   | eof      { EOF }
 
 and comment = parse
