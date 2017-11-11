@@ -37,5 +37,5 @@ and style_value =
   | ValueExpression
 and pattern =
   | NumberPattern(int)
-  | NumberRangePattern(int, int)
+  | NumberRangePattern((int, option(int)))
   | StringPattern(list(string));

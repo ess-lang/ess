@@ -6,7 +6,7 @@
 %token LBRACKET
 %token RBRACKET
 %token NEWLINE
-%token RANGE
+%token <int * int option>RANGE
 %token PIXEL
 %token <int * int * int>COLOR_SHORTHEX
 %token <int * int * int>COLOR_HEX
@@ -112,7 +112,7 @@ match_block_clause:
 
 pattern:
   | IDENTIFIER { [Ast.StringPattern([$1])] }
-  | RANGE { [Ast.NumberRangePattern(5, 25)] }
+  | RANGE { [Ast.NumberRangePattern($1)] }
 ;
 
 match_block_clause_body:
