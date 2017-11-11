@@ -30,6 +30,8 @@ and style_property =
   | BackgroundProperty
   | PaddingProperty
   | BorderProperty
+  | LineHeightProperty
+  | UnknownProperty(string)
 and style_value =
   | Px(float)
   | Em(float)

@@ -95,7 +95,7 @@ prop_val:
 
 base_style_thing:
   | IDENTIFIER style_value
-    { Ast.Style(Ast.ColorProperty, $2) }
+    { Ast.Style(string_to_property $1, $2) }
 
 match_block_body:
   | match_block_clause NEWLINE* { [$1] }

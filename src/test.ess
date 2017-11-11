@@ -12,6 +12,7 @@ Foo [
   @size = "sm" | "md" | "lg"
   @dark = boolean
 
+  line-height: red
   color #ff33aa
   background green
   color @yo {

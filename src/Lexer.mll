@@ -15,7 +15,7 @@ let digit = ['0'-'9']
 
 let hex = ['A'-'F' 'a'-'f' '0'-'9']
 
-let alpha = ['A'-'Z' 'a'-'z']
+let alpha = ['A'-'Z' '-' 'a'-'z']
 
 rule token = parse
   | '\n' { NEWLINE }
