@@ -4,19 +4,11 @@ type color =
 let string_of_color = (color) =>
   switch color {
   | RGBA(r, g, b, a) =>
-    "rgba("
-    ++ (
-      string_of_int(r)
-      ++ (
-        ", "
-        ++ (
-          string_of_int(g)
-          ++ (
-            ", " ++ (string_of_int(b) ++ (", " ++ (string_of_int(a) ++ ")")))
-          )
-        )
-      )
-    )
+    let r_ = string_of_int(r);
+    let g_ = string_of_int(g);
+    let b_ = string_of_int(b);
+    let a_ = string_of_int(a);
+    {j|rgba($(r_),$(g_),$(b_),$(a_))|j}
   };
 
 type length =
@@ -82,23 +74,11 @@ let string_of_declaration = (decl) =>
   switch decl {
   | Color(c) => "(color: " ++ (string_of_color(c) ++ ")")
   | Border(dir, len, bs, c) =>
-    "(border: "
-    ++ (
-      string_of_direction(dir)
-      ++ (
-        ", "
-        ++ (
-          string_of_length(len)
-          ++ (
-            ", "
-            ++ (
-              string_of_border_style(bs)
-              ++ (", " ++ (string_of_color(c) ++ ")"))
-            )
-          )
-        )
-      )
-    )
+    let dir_ = string_of_direction(dir);
+    let len_ = string_of_length(len);
+    let bs_ = string_of_border_style(bs);
+    let c_ = string_of_color(c);
+    {j|(border: $(dir_) $(len_) $(bs_) $(c_))|j}
   | Background(c) => "(background: " ++ (string_of_color(c) ++ ")")
   };
 
