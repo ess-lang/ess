@@ -23,10 +23,30 @@ type length =
   | Px(float)
   | Em(float);
 
+/*
+ Returns a CSS-compatible string representation of a float.
+
+ string_of_float(1.2)     => "1.2"
+ css_string_of_float(1.2) => "1.2"
+
+ string_of_float(1.0)     => "1."
+ css_string_of_float(1.0) => "1"
+ */
+let css_string_of_float = (float) => {
+  let as_string = string_of_float(float);
+  let is_integer = as_string.[String.length(as_string) - 1] == '.';
+  is_integer ?
+    {
+      let length = String.length(as_string) - 1;
+      String.sub(as_string, 0, length)
+    } :
+    as_string
+};
+
 let string_of_length = (length) =>
   switch length {
-  | Px(n) => string_of_float(n) ++ "px"
-  | Em(n) => string_of_float(n) ++ "em"
+  | Px(n) => css_string_of_float(n) ++ "px"
+  | Em(n) => css_string_of_float(n) ++ "em"
   };
 
 type direction =
@@ -170,7 +190,7 @@ let styles = [|
     Color(RGBA(255, 0, 0, 255)),
     Background(RGBA(0, 255, 0, 255)),
     Border(Top, Px(2.0), Solid, RGBA(255, 0, 0, 255)),
-    Border(Bottom, Px(2.0), Solid, RGBA(255, 0, 0, 255))
+    Border(Bottom, Px(2.5), Solid, RGBA(255, 0, 0, 255))
   ]),
   create_style([
     Color(RGBA(255, 255, 0, 255)),
