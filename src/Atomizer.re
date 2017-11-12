@@ -1,5 +1,20 @@
 type color =
-  | RGBA(int, int, int, int);
+  | RGBA(int, int, int, int)
+and length =
+  | Px(float)
+  | Em(float)
+and direction =
+  | Top
+  | Right
+  | Bottom
+  | Left
+and borderStyle =
+  | None
+  | Solid
+and declaration =
+  | Color(color)
+  | Border(direction, length, borderStyle, color)
+  | Background(color);
 
 let string_of_color = (color) =>
   switch color {
@@ -10,10 +25,6 @@ let string_of_color = (color) =>
     let a_ = string_of_int(a);
     {j|rgba($(r_),$(g_),$(b_),$(a_))|j}
   };
-
-type length =
-  | Px(float)
-  | Em(float);
 
 /*
  Returns a CSS-compatible string representation of a float.
@@ -41,12 +52,6 @@ let string_of_length = (length) =>
   | Em(n) => css_string_of_float(n) ++ "em"
   };
 
-type direction =
-  | Top
-  | Right
-  | Bottom
-  | Left;
-
 let string_of_direction = (direction) =>
   switch direction {
   | Top => "top"
@@ -55,20 +60,11 @@ let string_of_direction = (direction) =>
   | Left => "left"
   };
 
-type borderStyle =
-  | None
-  | Solid;
-
 let string_of_border_style = (borderStyle) =>
   switch borderStyle {
   | None => "none"
   | Solid => "solid"
   };
-
-type declaration =
-  | Color(color)
-  | Border(direction, length, borderStyle, color)
-  | Background(color);
 
 let string_of_declaration = (decl) =>
   switch decl {
