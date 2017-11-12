@@ -10,7 +10,10 @@ let string_of_color = (color) =>
       ++ (
         ", "
         ++ (
-          string_of_int(g) ++ (", " ++ (string_of_int(b) ++ (", " ++ (string_of_int(a) ++ ")"))))
+          string_of_int(g)
+          ++ (
+            ", " ++ (string_of_int(b) ++ (", " ++ (string_of_int(a) ++ ")")))
+          )
         )
       )
     )
@@ -66,7 +69,13 @@ let string_of_declaration = (decl) =>
         ", "
         ++ (
           string_of_length(len)
-          ++ (", " ++ (string_of_border_style(bs) ++ (", " ++ (string_of_color(c) ++ ")"))))
+          ++ (
+            ", "
+            ++ (
+              string_of_border_style(bs)
+              ++ (", " ++ (string_of_color(c) ++ ")"))
+            )
+          )
         )
       )
     )
@@ -163,10 +172,14 @@ let styles = [|
     Border(Top, Px(2.0), Solid, RGBA(255, 0, 0, 255)),
     Border(Bottom, Px(2.0), Solid, RGBA(255, 0, 0, 255))
   ]),
-  create_style([Color(RGBA(255, 255, 0, 255)), Background(RGBA(255, 255, 0, 255))])
+  create_style([
+    Color(RGBA(255, 255, 0, 255)),
+    Background(RGBA(255, 255, 0, 255))
+  ])
 |];
 
-let atoms = styles |> DeclarationMap.of_styles |> AtomicDeclarationMap.of_declaration_map;
+let atoms =
+  styles |> DeclarationMap.of_styles |> AtomicDeclarationMap.of_declaration_map;
 
 AtomicDeclarationMap.iter(
   (_, decls) => Js.log("[ " ++ (DeclarationSet.to_string(decls) ++ " ]")),
