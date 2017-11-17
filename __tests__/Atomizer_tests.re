@@ -2,6 +2,8 @@ open Jest;
 
 open Atomizer;
 
+open Styles;
+
 describe(
   "Atomizer.string_of_color",
   ExpectJs.(
@@ -47,22 +49,20 @@ describe(
 );
 
 describe(
-  "Atomizer.string_of_declaration",
+  "Atomizer.string_of_style",
   ExpectJs.(
     () => {
       test(
         "color",
         () =>
-          expect(string_of_declaration(Color(RGBA(1, 2, 3, 4))))
+          expect(string_of_style(Color(RGBA(1, 2, 3, 4))))
           |> toBe("(color: rgba(1,2,3,4))")
       );
       test(
         "border",
         () =>
           expect(
-            string_of_declaration(
-              Border(Top, Px(2.0), Solid, RGBA(1, 4, 3, 2))
-            )
+            string_of_style(Border(Top, Px(2.0), Solid, RGBA(1, 4, 3, 2)))
           )
           |> toBe("(border: top 2px solid rgba(1,4,3,2))")
       )
