@@ -41,6 +41,7 @@ and style_value =
   | ColorNamed(string)
   | VariableReference
   | ValueExpression
+  | UnknownValue(string)
 and pattern =
   | NumberPattern(int)
   | NumberRangePattern((int, option(int)))

@@ -14,7 +14,8 @@ and borderStyle =
 and style =
   | Color(color)
   | Border(direction, length, borderStyle, color)
-  | Background(color);
+  | Background(color)
+  | UnknownStyle;
 
 let string_of_color = (color) =>
   switch color {
