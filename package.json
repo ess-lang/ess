@@ -8,7 +8,7 @@
     "clean": "bsb -clean-world"
   },
   "devDependencies": {
-    "bs-platform": "^2.0.0"
+    "bs-platform": "^2.1.0"
   },
   "license": "MIT",
   "dependencies": {
