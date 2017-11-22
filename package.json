@@ -2,6 +2,7 @@
   "name": "ess",
   "version": "0.0.0",
   "scripts": {
+    "postinstall": "curl -L https://github.com/reasonml/reasonml.github.io/raw/cda0f8a13144334e833a68eebf25b5a9ba8497e0/static/bs.js -o bs.js",
     "build": "bsb -make-world",
     "start": "bsb -make-world -w",
     "clean": "bsb -clean-world"

@@ -1,0 +1,50 @@
+
+
+VARDEC
+VARDEC
+
+
+/**
+ * Multiline block comment
+ */
+
+Foo [
+  @size = "sm" | "md" | "lg"
+  @dark = boolean
+  color #cc00cc
+  line-height: red
+  color #ff33aa
+  background green
+  color @yo {
+    "sm" | "md" => #FF0
+  }
+  color @ba {
+    "lg" => #cc00cc
+  }
+  color @qq {}
+]
+
+/* One line block comment */
+
+Bar [
+  (@blah, @yeah) {
+    ("sm", 25..100) => [
+      color red
+    ]
+    ("md", 100..200) => color green
+    ("xl", 200..300) => []
+    (_, _) => []
+  }
+
+  @doh {}
+
+  @neat {
+    25..500 => []
+    500..750 => color red
+    750.. => [
+      color blue
+    ]
+  }
+]
+
+Qux []

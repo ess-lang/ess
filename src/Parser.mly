@@ -82,9 +82,9 @@ body_expression:
   | prop_arguments LBRACE NEWLINE+ match_block_body RBRACE
     { Ast.MatchBlockExpression($1, $4) }
   | IDENTIFIER prop_arguments LBRACE NEWLINE* RBRACE
-    { Ast.MatchValueExpression(Ast.ColorProperty, $2, []) }
+    { Ast.MatchValueExpression(string_to_property $1, $2, []) }
   | IDENTIFIER prop_arguments LBRACE NEWLINE+ match_value_body RBRACE
-    { Ast.MatchValueExpression(Ast.ColorProperty, $2, $5) }
+    { Ast.MatchValueExpression(string_to_property $1, $2, $5) }
 
 prop_arguments:
   | prop_val { [$1] }
@@ -119,11 +119,15 @@ match_block_clause:
 
 pattern_def:
   | pattern { [$1] }
-  | yo = delimited(LPAREN, separated_nonempty_list(COMMA, pattern), RPAREN) { yo }
+  | p = delimited(LPAREN, separated_nonempty_list(COMMA, pattern), RPAREN) { p }
 
 pattern:
   | ls = separated_nonempty_list(PIPE, STRING)
     { Ast.StringPattern(ls) }
+  | TRUE
+    { Ast.BooleanPattern(true) }
+  | FALSE
+    { Ast.BooleanPattern(false) }
   | RANGE
     { Ast.NumberRangePattern($1) }
   | UNDERSCORE

@@ -45,6 +45,7 @@ and style_value =
 and pattern =
   | NumberPattern(int)
   | NumberRangePattern((int, option(int)))
+  | BooleanPattern(bool)
   | StringPattern(list(string))
   | FallthroughPattern;
 /* let string_of_statement = (n) =>

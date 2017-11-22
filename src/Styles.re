@@ -17,6 +17,14 @@ and style =
   | Background(color)
   | UnknownStyle;
 
+let is_same_prop = (a, b) =>
+  switch (a, b) {
+  | (Color(_), Color(_)) => true
+  | (Border(_), Border(_)) => true
+  | (Background(_), Background(_)) => true
+  | _ => false
+  };
+
 let string_of_color = (color) =>
   switch color {
   | RGBA(r, g, b, a) =>
@@ -77,6 +85,7 @@ let string_of_style = (style) =>
     let c_ = string_of_color(c);
     {j|(border: $(dir_) $(len_) $(bs_) $(c_))|j}
   | Background(c) => "(background: " ++ (string_of_color(c) ++ ")")
+  | _ => "unknown_style"
   };
 
 /* Set of unique styles, constitutes a style */
@@ -89,16 +98,11 @@ module StyleSet = {
       }
     );
   include S;
+  /* add style while overriding exising one */
+  let add_style = (style, set) =>
+    set |> S.filter((item) => ! is_same_prop(style, item)) |> S.add(style);
   let to_string = (set) =>
     String.concat(",\n  ", List.map(string_of_style, S.elements(set)));
 };
 
 let create_style = StyleSet.of_list;
-
-module IntSet =
-  Set.Make(
-    {
-      type t = int;
-      let compare = compare;
-    }
-  );

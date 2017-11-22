@@ -1,6 +1,7 @@
 .bsb.lock
 .merlin
 npm-debug.log
+yarn-error.log
 package-lock.json
 /lib/
 /node_modules/
@@ -9,3 +10,5 @@ package-lock.json
 /src/Parser.ml
 /src/Lexer.ml
 Parser.conflicts
+
+/bs.js
