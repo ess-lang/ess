@@ -1,5 +1,6 @@
 [@bs.module "../../../bs-wrapper.js"] external compile : string => string = "";
 
+[@bs.deriving jsConverter]
 type output = {
   js_code: string,
   flow_def: string,
@@ -56,29 +57,44 @@ let flow_type_of_ast_value_type = (prop_value_type) =>
   | Ast.NumberType => "number"
   };
 
-let destructured_props = (prop_names) =>
-
-    ["element"] @
-    List.map(
-      (x) => {
-        let (name, _) = x;
-        name
-      },
-      prop_names
-    );
+let destructured_props = (prop_names) => {
+  let names =
+    ["element"]
+    @ List.map(
+        (x) => {
+          let (name, _) = x;
+          name
+        },
+        prop_names
+      );
+  List.map((name) => {j|"$(name)"|j}, names)
+};
 
 let react_class = (name, prop_names) => {
   let prop_string = String.concat(", ", destructured_props(prop_names));
   {j|exports.$(name) = function $(name)(props) {
   const c = c_$(name)(props);
-  const { $(prop_string), ...rest } = props;
+  const rest = objectWithoutProperties(props, $(prop_string));
   rest.className = rest.className ? rest.className + " " + c : c;
   return React.createElement(props.element, rest);
 }|j}
 };
 
 let js_react_wrapper = (str, elements: list(Optimizer.ER.element)) =>
-  "var React = require('react');\n\n"
+  {j|function objectWithoutProperties(source, excluded) {
+  if (source == null) return {};
+  var target = {};
+  var sourceKeys = Object.keys(source);
+  var key, i;
+  for (i = 0; i < sourceKeys.length; i++) {
+    key = sourceKeys[i];
+    if (excluded.indexOf(key) >= 0) continue;
+    target[key] = source[key];
+  }
+  return target;
+}
+|j}
+  ++ "var React = require('react');\n\n"
   ++ str
   ++ "\n\n"
   ++ String.concat(

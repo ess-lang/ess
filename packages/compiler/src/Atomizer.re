@@ -191,27 +191,27 @@ module AtomicStyleLookup = {
     lookup_table
   };
 };
+/*
+ /* styles to atomize */
+ let styles = [|
+   create_style([Color(RGBA(255, 0, 0, 255))]),
+   create_style([Background(RGBA(0, 255, 0, 255))]),
+   create_style([
+     Color(RGBA(255, 0, 0, 255)),
+     Background(RGBA(0, 255, 0, 255)),
+     Border(Top, Px(2.0), Solid, RGBA(255, 0, 0, 255)),
+     Border(Bottom, Px(2.5), Solid, RGBA(255, 0, 0, 255))
+   ]),
+   create_style([
+     Color(RGBA(255, 255, 0, 255)),
+     Background(RGBA(255, 255, 0, 255))
+   ])
+ |];
 
-/* styles to atomize */
-let styles = [|
-  create_style([Color(RGBA(255, 0, 0, 255))]),
-  create_style([Background(RGBA(0, 255, 0, 255))]),
-  create_style([
-    Color(RGBA(255, 0, 0, 255)),
-    Background(RGBA(0, 255, 0, 255)),
-    Border(Top, Px(2.0), Solid, RGBA(255, 0, 0, 255)),
-    Border(Bottom, Px(2.5), Solid, RGBA(255, 0, 0, 255))
-  ]),
-  create_style([
-    Color(RGBA(255, 255, 0, 255)),
-    Background(RGBA(255, 255, 0, 255))
-  ])
-|];
+ let atoms =
+   styles |> StyleHashTable.of_styles |> AtomicStyleHashTable.of_declaration_map;
 
-let atoms =
-  styles |> StyleHashTable.of_styles |> AtomicStyleHashTable.of_declaration_map;
-
-AtomicStyleHashTable.iter(
-  (_, decls) => Js.log("[ " ++ (StyleSet.to_string(decls) ++ " ]")),
-  atoms
-);
+ AtomicStyleHashTable.iter(
+   (_, decls) => Js.log("[ " ++ (StyleSet.to_string(decls) ++ " ]")),
+   atoms
+ ); */

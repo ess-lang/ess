@@ -8,3 +8,5 @@ let compile = (str: string) : ReactTarget.output => {
   let parsed = Parser.input(Lexer.token, lexbuf);
   compile_from_ast(parsed)
 };
+
+let compile_js = (str: string) => ReactTarget.outputToJs(compile(str));

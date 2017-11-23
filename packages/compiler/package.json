@@ -1,17 +1,17 @@
 {
-  "name": "ess",
+  "name": "@ess/compiler",
   "version": "0.0.0",
   "scripts": {
     "postinstall": "curl -L https://github.com/reasonml/reasonml.github.io/raw/cda0f8a13144334e833a68eebf25b5a9ba8497e0/static/bs.js -o bs.js",
+    "prepublish": "npm run build",
     "build": "bsb -make-world",
     "start": "bsb -make-world -w",
     "clean": "bsb -clean-world"
   },
+  "main": "lib/js/src/Compiler.js",
   "devDependencies": {
-    "bs-platform": "^2.1.0"
-  },
-  "license": "MIT",
-  "dependencies": {
+    "bs-platform": "^2.1.0",
     "bs-jest": "^0.2.0"
-  }
+  },
+  "license": "MIT"
 }
