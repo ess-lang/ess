@@ -1,5 +1,11 @@
 [@bs.module "../../../bs-wrapper.js"] external compile : string => string = "";
 
+type output = {
+  js_code: string,
+  flow_def: string,
+  css: string
+};
+
 let match_of_styles = (styles, get_name) =>
   Optimizer.ER.fold(
     (states, styles, acc) =>
@@ -50,6 +56,43 @@ let flow_type_of_ast_value_type = (prop_value_type) =>
   | Ast.NumberType => "number"
   };
 
+let destructured_props = (prop_names) =>
+
+    ["element"] @
+    List.map(
+      (x) => {
+        let (name, _) = x;
+        name
+      },
+      prop_names
+    );
+
+let react_class = (name, prop_names) => {
+  let prop_string = String.concat(", ", destructured_props(prop_names));
+  {j|exports.$(name) = function $(name)(props) {
+  const c = c_$(name)(props);
+  const { $(prop_string), ...rest } = props;
+  rest.className = rest.className ? rest.className + " " + c : c;
+  return React.createElement(props.element, rest);
+}|j}
+};
+
+let js_react_wrapper = (str, elements: list(Optimizer.ER.element)) =>
+  "var React = require('react');\n\n"
+  ++ str
+  ++ "\n\n"
+  ++ String.concat(
+       "\n\n",
+       List.map(
+         (element: Optimizer.ER.element) => {
+           let name = element.name;
+           react_class(name, element.style_types)
+         },
+         elements
+       )
+     )
+  ++ "\n";
+
 let flow_interface = (elements) => {
   let prefix = "// @flow\n" ++ "import * as React from 'react';\n\n";
   let interface =
@@ -74,7 +117,7 @@ let flow_interface = (elements) => {
   prefix ++ String.concat("\n", interface)
 };
 
-let generate = (elements) => {
+let generate = (elements) : output => {
   let all_styles =
     elements
     |> List.map(
@@ -91,7 +134,8 @@ let generate = (elements) => {
   let css =
     Atomizer.AtomicStyleHashTable.fold(
       (_, style, str) => {
-        let cname = Atomizer.AtomicStyleLookup.class_str_for_style(table, style);
+        let cname =
+          Atomizer.AtomicStyleLookup.class_str_for_style(table, style);
         str
         ++ "."
         ++ cname
@@ -103,15 +147,8 @@ let generate = (elements) => {
       atom_styles,
       ""
     );
-  Js.log("==== CSS ====");
-  Js.log(css);
-  Js.log("===== OCAML ====");
   let ocaml = ocaml_impl(elements, table);
-  Js.log(ocaml);
-  Js.log("===== JS ====");
-  let js = compile(ocaml);
-  Js.log(js);
-  Js.log("==== FLOW ====");
+  let js = js_react_wrapper(compile(ocaml), elements);
   let flow = flow_interface(elements);
-  Js.log(flow)
+  {js_code: js, css, flow_def: flow}
 };

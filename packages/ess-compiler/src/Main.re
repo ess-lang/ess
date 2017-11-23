@@ -16,4 +16,17 @@ List.iter(
   elements
 );
 
-ReactTarget.generate(elements);
+let {css, js_code, flow_def}: ReactTarget.output =
+  Compiler.compile_from_ast(parsed);
+
+Js.log("==== CSS ====");
+
+Js.log(css);
+
+Js.log("==== JS ====");
+
+Js.log(js_code);
+
+Js.log("==== FLOW ====");
+
+Js.log(flow_def);

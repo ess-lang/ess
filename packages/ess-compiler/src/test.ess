@@ -7,3 +7,7 @@ Bar [
     "hello" => #000000
   }
 ]
+
+Baz [
+  color #00ff00
+]
