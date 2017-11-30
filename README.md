@@ -1,6 +1,6 @@
 # Element style sheets
 
-> Note: this project is highly experimental and not yet ready for production usage. Expect many breaking changes and instability for the time being. It is a work in progress and many features may be incomplete or missing. The current level of quality is somewhere between proof-of-concept and prototype and there are few automated tests.
+> Note: this project is highly experimental and not yet ready for production usage. It is a work in progress and many features are incomplete, missing, or broken. The current level of quality is somewhere between proof-of-concept and prototype and there are few automated tests. Expect many breaking changes and instability for the time being.
 
 ESS is a language for styling UI components
 
