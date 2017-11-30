@@ -33,3 +33,6 @@ ESS is a language for styling UI components
 
 ### Trade-offs
 See [TRADEOFFS.md](https://github.com/rtsao/ess/blob/master/TRADEOFFS.md)
+
+### Language design
+See [docs/design.md](https://github.com/rtsao/ess/blob/master/docs/design.md)
