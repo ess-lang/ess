@@ -2,7 +2,7 @@ module I = Parser.MenhirInterpreter;
 
 type parseResult =
   | Success(Ast.stylesheet)
-  | Failure(int, int)
+  | Failure(int, Lexing.position)
   | UnknownError(string);
 
 let succeed = (sheet: Ast.stylesheet) => Success(sheet);
@@ -22,8 +22,8 @@ let state = (checkpoint) : int => {
 };
 
 let fail = (lexbuf, checkpoint: I.checkpoint(Ast.stylesheet)) => {
-  let offset = Lexing.lexeme_start(lexbuf);
-  Failure(state(checkpoint), offset)
+  let pos = Lexing.lexeme_start_p(lexbuf);
+  Failure(state(checkpoint), pos)
 };
 
 let loop = (lexbuf, result) => {

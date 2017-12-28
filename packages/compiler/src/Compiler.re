@@ -6,9 +6,11 @@ let compile_from_ast = (ast) : ReactTarget.output => {
 let maybe_log_error = (result) =>
   switch result {
   | SheetParser.Success(ast) => Some(compile_from_ast(ast))
-  | SheetParser.Failure(state, offset) =>
+  | SheetParser.Failure(state, pos) =>
     let msg = ParseErrors.message(state);
-    Js.log({j|Error: $(msg) at offset: $(offset)|j});
+    let line = pos.pos_lnum;
+    let col = pos.pos_cnum - pos.pos_bol + 1;
+    Js.log({j|Error: $(msg) at $(line):$(col)|j});
     None
   | SheetParser.UnknownError(msg) =>
     Js.log({j|Error: $(msg)|j});

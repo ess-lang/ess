@@ -21,7 +21,7 @@ let hex = ['A'-'F' 'a'-'f' '0'-'9']
 let alpha = ['A'-'Z' '-' 'a'-'z']
 
 rule token = parse
-  | '\n' { NEWLINE }
+  | '\n' { Lexing.new_line lexbuf; NEWLINE }
   | '_' { UNDERSCORE }
   | '=' '>' { ARROW }
   | '=' { EQ }
