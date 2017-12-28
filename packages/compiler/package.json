@@ -10,8 +10,8 @@
   },
   "main": "lib/js/src/Compiler.js",
   "devDependencies": {
-    "bs-platform": "^2.1.0",
-    "bs-jest": "^0.2.0"
+    "bs-jest": "^0.2.0",
+    "bs-platform": "^2.1.0"
   },
   "license": "MIT"
 }

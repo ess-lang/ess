@@ -1,5 +1,8 @@
 {
   open Parser
+
+  exception Error of string
+
   let get = Lexing.lexeme
 
   let hex_to_int hex_char1 hex_char2 = int_of_string ("0x" ^ (String.make 1 hex_char1) ^ (String.make 1 hex_char2))

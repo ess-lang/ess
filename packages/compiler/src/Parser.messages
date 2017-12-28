@@ -1,0 +1,720 @@
+input: IDENTIFIER LBRACKET IDENTIFIER IDENTIFIER NEWLINE RBRACE 
+##
+## Ends in an error in state: 83.
+##
+## _class -> IDENTIFIER LBRACKET list(NEWLINE) class_body . RBRACKET [ NEWLINE EOF ]
+##
+## The known suffix of the stack is as follows:
+## IDENTIFIER LBRACKET list(NEWLINE) class_body 
+##
+## WARNING: This example involves spurious reductions.
+## This implies that, although the LR(1) items shown above provide an
+## accurate view of the past (what has been recognized so far), they
+## may provide an INCOMPLETE view of the future (what was expected next).
+## In state 31, spurious reduction of production list(NEWLINE) -> 
+## In state 2, spurious reduction of production list(NEWLINE) -> NEWLINE list(NEWLINE) 
+## In state 89, spurious reduction of production body_block -> body_expression list(NEWLINE) 
+## In state 90, spurious reduction of production option(body_block) -> body_block 
+## In state 82, spurious reduction of production class_body -> option(body_block) 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+input: IDENTIFIER LBRACKET IDENTIFIER IDENTIFIER NEWLINE VARDEC 
+##
+## Ends in an error in state: 86.
+##
+## body_block -> body_expression nonempty_list(NEWLINE) . body_block [ RBRACKET ]
+##
+## The known suffix of the stack is as follows:
+## body_expression nonempty_list(NEWLINE) 
+##
+## WARNING: This example involves spurious reductions.
+## This implies that, although the LR(1) items shown above provide an
+## accurate view of the past (what has been recognized so far), they
+## may provide an INCOMPLETE view of the future (what was expected next).
+## In state 31, spurious reduction of production nonempty_list(NEWLINE) -> NEWLINE 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+input: IDENTIFIER LBRACKET IDENTIFIER IDENTIFIER VARDEC 
+##
+## Ends in an error in state: 85.
+##
+## body_block -> body_expression . list(NEWLINE) [ RBRACKET ]
+## body_block -> body_expression . nonempty_list(NEWLINE) body_block [ RBRACKET ]
+##
+## The known suffix of the stack is as follows:
+## body_expression 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+input: IDENTIFIER LBRACKET IDENTIFIER PROP LBRACE NEWLINE RBRACKET 
+##
+## Ends in an error in state: 55.
+##
+## body_expression -> IDENTIFIER prop_arguments LBRACE list(NEWLINE) . RBRACE [ RBRACKET NEWLINE ]
+##
+## The known suffix of the stack is as follows:
+## IDENTIFIER prop_arguments LBRACE list(NEWLINE) 
+##
+## WARNING: This example involves spurious reductions.
+## This implies that, although the LR(1) items shown above provide an
+## accurate view of the past (what has been recognized so far), they
+## may provide an INCOMPLETE view of the future (what was expected next).
+## In state 31, spurious reduction of production list(NEWLINE) -> 
+## In state 2, spurious reduction of production list(NEWLINE) -> NEWLINE list(NEWLINE) 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+input: IDENTIFIER LBRACKET IDENTIFIER PROP LBRACE NEWLINE UNDERSCORE ARROW COLOR_HEX NEWLINE RBRACKET 
+##
+## Ends in an error in state: 53.
+##
+## body_expression -> IDENTIFIER prop_arguments LBRACE nonempty_list(NEWLINE) match_value_body . RBRACE [ RBRACKET NEWLINE ]
+##
+## The known suffix of the stack is as follows:
+## IDENTIFIER prop_arguments LBRACE nonempty_list(NEWLINE) match_value_body 
+##
+## WARNING: This example involves spurious reductions.
+## This implies that, although the LR(1) items shown above provide an
+## accurate view of the past (what has been recognized so far), they
+## may provide an INCOMPLETE view of the future (what was expected next).
+## In state 31, spurious reduction of production list(NEWLINE) -> 
+## In state 2, spurious reduction of production list(NEWLINE) -> NEWLINE list(NEWLINE) 
+## In state 52, spurious reduction of production match_value_body -> match_value_clause list(NEWLINE) 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+input: IDENTIFIER LBRACKET IDENTIFIER PROP LBRACE NEWLINE UNDERSCORE ARROW COLOR_HEX NEWLINE VARDEC 
+##
+## Ends in an error in state: 50.
+##
+## match_value_body -> match_value_clause nonempty_list(NEWLINE) . match_value_body [ RBRACE ]
+##
+## The known suffix of the stack is as follows:
+## match_value_clause nonempty_list(NEWLINE) 
+##
+## WARNING: This example involves spurious reductions.
+## This implies that, although the LR(1) items shown above provide an
+## accurate view of the past (what has been recognized so far), they
+## may provide an INCOMPLETE view of the future (what was expected next).
+## In state 31, spurious reduction of production nonempty_list(NEWLINE) -> NEWLINE 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+input: IDENTIFIER LBRACKET IDENTIFIER PROP LBRACE NEWLINE UNDERSCORE ARROW COLOR_HEX VARDEC 
+##
+## Ends in an error in state: 49.
+##
+## match_value_body -> match_value_clause . list(NEWLINE) [ RBRACE ]
+## match_value_body -> match_value_clause . nonempty_list(NEWLINE) match_value_body [ RBRACE ]
+##
+## The known suffix of the stack is as follows:
+## match_value_clause 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+input: IDENTIFIER LBRACKET IDENTIFIER PROP LBRACE NEWLINE UNDERSCORE ARROW VARDEC 
+##
+## Ends in an error in state: 46.
+##
+## match_value_clause -> pattern_def ARROW . style_value [ RBRACE NEWLINE ]
+##
+## The known suffix of the stack is as follows:
+## pattern_def ARROW 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+input: IDENTIFIER LBRACKET IDENTIFIER PROP LBRACE NEWLINE UNDERSCORE VARDEC 
+##
+## Ends in an error in state: 45.
+##
+## match_value_clause -> pattern_def . ARROW style_value [ RBRACE NEWLINE ]
+##
+## The known suffix of the stack is as follows:
+## pattern_def 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+input: IDENTIFIER LBRACKET IDENTIFIER PROP LBRACE NEWLINE VARDEC 
+##
+## Ends in an error in state: 33.
+##
+## body_expression -> IDENTIFIER prop_arguments LBRACE nonempty_list(NEWLINE) . match_value_body RBRACE [ RBRACKET NEWLINE ]
+##
+## The known suffix of the stack is as follows:
+## IDENTIFIER prop_arguments LBRACE nonempty_list(NEWLINE) 
+##
+## WARNING: This example involves spurious reductions.
+## This implies that, although the LR(1) items shown above provide an
+## accurate view of the past (what has been recognized so far), they
+## may provide an INCOMPLETE view of the future (what was expected next).
+## In state 31, spurious reduction of production nonempty_list(NEWLINE) -> NEWLINE 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+input: IDENTIFIER LBRACKET IDENTIFIER PROP LBRACE VARDEC 
+##
+## Ends in an error in state: 30.
+##
+## body_expression -> IDENTIFIER prop_arguments LBRACE . list(NEWLINE) RBRACE [ RBRACKET NEWLINE ]
+## body_expression -> IDENTIFIER prop_arguments LBRACE . nonempty_list(NEWLINE) match_value_body RBRACE [ RBRACKET NEWLINE ]
+##
+## The known suffix of the stack is as follows:
+## IDENTIFIER prop_arguments LBRACE 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+input: IDENTIFIER LBRACKET IDENTIFIER PROP VARDEC 
+##
+## Ends in an error in state: 29.
+##
+## body_expression -> IDENTIFIER prop_arguments . LBRACE list(NEWLINE) RBRACE [ RBRACKET NEWLINE ]
+## body_expression -> IDENTIFIER prop_arguments . LBRACE nonempty_list(NEWLINE) match_value_body RBRACE [ RBRACKET NEWLINE ]
+##
+## The known suffix of the stack is as follows:
+## IDENTIFIER prop_arguments 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+input: IDENTIFIER LBRACKET IDENTIFIER VARDEC 
+##
+## Ends in an error in state: 23.
+##
+## base_style_thing -> IDENTIFIER . style_value [ RBRACKET NEWLINE ]
+## body_expression -> IDENTIFIER . prop_arguments LBRACE list(NEWLINE) RBRACE [ RBRACKET NEWLINE ]
+## body_expression -> IDENTIFIER . prop_arguments LBRACE nonempty_list(NEWLINE) match_value_body RBRACE [ RBRACKET NEWLINE ]
+##
+## The known suffix of the stack is as follows:
+## IDENTIFIER 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+input: IDENTIFIER LBRACKET LPAREN PROP COMMA VARDEC 
+##
+## Ends in an error in state: 21.
+##
+## separated_nonempty_list(COMMA,prop_val) -> prop_val COMMA . separated_nonempty_list(COMMA,prop_val) [ RPAREN ]
+##
+## The known suffix of the stack is as follows:
+## prop_val COMMA 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+input: IDENTIFIER LBRACKET LPAREN PROP RPAREN VARDEC 
+##
+## Ends in an error in state: 58.
+##
+## body_expression -> prop_arguments . LBRACE list(NEWLINE) RBRACE [ RBRACKET NEWLINE ]
+## body_expression -> prop_arguments . LBRACE nonempty_list(NEWLINE) match_block_body RBRACE [ RBRACKET NEWLINE ]
+##
+## The known suffix of the stack is as follows:
+## prop_arguments 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+input: IDENTIFIER LBRACKET LPAREN PROP VARDEC 
+##
+## Ends in an error in state: 20.
+##
+## separated_nonempty_list(COMMA,prop_val) -> prop_val . [ RPAREN ]
+## separated_nonempty_list(COMMA,prop_val) -> prop_val . COMMA separated_nonempty_list(COMMA,prop_val) [ RPAREN ]
+##
+## The known suffix of the stack is as follows:
+## prop_val 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+input: IDENTIFIER LBRACKET LPAREN VARDEC 
+##
+## Ends in an error in state: 16.
+##
+## prop_arguments -> LPAREN . separated_nonempty_list(COMMA,prop_val) RPAREN [ LBRACE ]
+##
+## The known suffix of the stack is as follows:
+## LPAREN 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+input: IDENTIFIER LBRACKET NEWLINE EOF 
+##
+## Ends in an error in state: 7.
+##
+## _class -> IDENTIFIER LBRACKET list(NEWLINE) . class_body RBRACKET [ NEWLINE EOF ]
+##
+## The known suffix of the stack is as follows:
+## IDENTIFIER LBRACKET list(NEWLINE) 
+##
+## WARNING: This example involves spurious reductions.
+## This implies that, although the LR(1) items shown above provide an
+## accurate view of the past (what has been recognized so far), they
+## may provide an INCOMPLETE view of the future (what was expected next).
+## In state 1, spurious reduction of production list(NEWLINE) -> 
+## In state 2, spurious reduction of production list(NEWLINE) -> NEWLINE list(NEWLINE) 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+input: IDENTIFIER LBRACKET PROP EQ STRING PIPE VARDEC 
+##
+## Ends in an error in state: 11.
+##
+## separated_nonempty_list(PIPE,STRING) -> STRING PIPE . separated_nonempty_list(PIPE,STRING) [ RPAREN RBRACKET NEWLINE COMMA ARROW ]
+##
+## The known suffix of the stack is as follows:
+## STRING PIPE 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+input: IDENTIFIER LBRACKET PROP EQ STRING VARDEC 
+##
+## Ends in an error in state: 10.
+##
+## separated_nonempty_list(PIPE,STRING) -> STRING . [ RPAREN RBRACKET NEWLINE COMMA ARROW ]
+## separated_nonempty_list(PIPE,STRING) -> STRING . PIPE separated_nonempty_list(PIPE,STRING) [ RPAREN RBRACKET NEWLINE COMMA ARROW ]
+##
+## The known suffix of the stack is as follows:
+## STRING 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+input: IDENTIFIER LBRACKET PROP EQ VARDEC 
+##
+## Ends in an error in state: 9.
+##
+## prop_type -> PROP EQ . prop_type_value [ RBRACKET NEWLINE ]
+##
+## The known suffix of the stack is as follows:
+## PROP EQ 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+input: IDENTIFIER LBRACKET PROP LBRACE NEWLINE LPAREN UNDERSCORE COMMA VARDEC 
+##
+## Ends in an error in state: 43.
+##
+## separated_nonempty_list(COMMA,pattern) -> pattern COMMA . separated_nonempty_list(COMMA,pattern) [ RPAREN ]
+##
+## The known suffix of the stack is as follows:
+## pattern COMMA 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+input: IDENTIFIER LBRACKET PROP LBRACE NEWLINE LPAREN UNDERSCORE VARDEC 
+##
+## Ends in an error in state: 42.
+##
+## separated_nonempty_list(COMMA,pattern) -> pattern . [ RPAREN ]
+## separated_nonempty_list(COMMA,pattern) -> pattern . COMMA separated_nonempty_list(COMMA,pattern) [ RPAREN ]
+##
+## The known suffix of the stack is as follows:
+## pattern 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+input: IDENTIFIER LBRACKET PROP LBRACE NEWLINE LPAREN VARDEC 
+##
+## Ends in an error in state: 37.
+##
+## pattern_def -> LPAREN . separated_nonempty_list(COMMA,pattern) RPAREN [ ARROW ]
+##
+## The known suffix of the stack is as follows:
+## LPAREN 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+input: IDENTIFIER LBRACKET PROP LBRACE NEWLINE RBRACKET 
+##
+## Ends in an error in state: 80.
+##
+## body_expression -> prop_arguments LBRACE list(NEWLINE) . RBRACE [ RBRACKET NEWLINE ]
+##
+## The known suffix of the stack is as follows:
+## prop_arguments LBRACE list(NEWLINE) 
+##
+## WARNING: This example involves spurious reductions.
+## This implies that, although the LR(1) items shown above provide an
+## accurate view of the past (what has been recognized so far), they
+## may provide an INCOMPLETE view of the future (what was expected next).
+## In state 31, spurious reduction of production list(NEWLINE) -> 
+## In state 2, spurious reduction of production list(NEWLINE) -> NEWLINE list(NEWLINE) 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+input: IDENTIFIER LBRACKET PROP LBRACE NEWLINE UNDERSCORE ARROW IDENTIFIER VARDEC 
+##
+## Ends in an error in state: 66.
+##
+## base_style_thing -> IDENTIFIER . style_value [ RBRACKET RBRACE NEWLINE ]
+##
+## The known suffix of the stack is as follows:
+## IDENTIFIER 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+input: IDENTIFIER LBRACKET PROP LBRACE NEWLINE UNDERSCORE ARROW LBRACKET IDENTIFIER IDENTIFIER NEWLINE RBRACE 
+##
+## Ends in an error in state: 67.
+##
+## match_block_clause -> pattern_def ARROW LBRACKET list(NEWLINE) match_block_clause_body . RBRACKET [ RBRACE NEWLINE ]
+##
+## The known suffix of the stack is as follows:
+## pattern_def ARROW LBRACKET list(NEWLINE) match_block_clause_body 
+##
+## WARNING: This example involves spurious reductions.
+## This implies that, although the LR(1) items shown above provide an
+## accurate view of the past (what has been recognized so far), they
+## may provide an INCOMPLETE view of the future (what was expected next).
+## In state 31, spurious reduction of production list(NEWLINE) -> 
+## In state 2, spurious reduction of production list(NEWLINE) -> NEWLINE list(NEWLINE) 
+## In state 72, spurious reduction of production match_block_clause_body -> base_style_thing list(NEWLINE) 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+input: IDENTIFIER LBRACKET PROP LBRACE NEWLINE UNDERSCORE ARROW LBRACKET IDENTIFIER IDENTIFIER NEWLINE VARDEC 
+##
+## Ends in an error in state: 70.
+##
+## match_block_clause_body -> base_style_thing nonempty_list(NEWLINE) . match_block_clause_body [ RBRACKET ]
+##
+## The known suffix of the stack is as follows:
+## base_style_thing nonempty_list(NEWLINE) 
+##
+## WARNING: This example involves spurious reductions.
+## This implies that, although the LR(1) items shown above provide an
+## accurate view of the past (what has been recognized so far), they
+## may provide an INCOMPLETE view of the future (what was expected next).
+## In state 31, spurious reduction of production nonempty_list(NEWLINE) -> NEWLINE 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+input: IDENTIFIER LBRACKET PROP LBRACE NEWLINE UNDERSCORE ARROW LBRACKET IDENTIFIER IDENTIFIER VARDEC 
+##
+## Ends in an error in state: 69.
+##
+## match_block_clause_body -> base_style_thing . list(NEWLINE) [ RBRACKET ]
+## match_block_clause_body -> base_style_thing . nonempty_list(NEWLINE) match_block_clause_body [ RBRACKET ]
+##
+## The known suffix of the stack is as follows:
+## base_style_thing 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+input: IDENTIFIER LBRACKET PROP LBRACE NEWLINE UNDERSCORE ARROW LBRACKET NEWLINE EOF 
+##
+## Ends in an error in state: 64.
+##
+## match_block_clause -> pattern_def ARROW LBRACKET list(NEWLINE) . RBRACKET [ RBRACE NEWLINE ]
+## match_block_clause -> pattern_def ARROW LBRACKET list(NEWLINE) . match_block_clause_body RBRACKET [ RBRACE NEWLINE ]
+##
+## The known suffix of the stack is as follows:
+## pattern_def ARROW LBRACKET list(NEWLINE) 
+##
+## WARNING: This example involves spurious reductions.
+## This implies that, although the LR(1) items shown above provide an
+## accurate view of the past (what has been recognized so far), they
+## may provide an INCOMPLETE view of the future (what was expected next).
+## In state 1, spurious reduction of production list(NEWLINE) -> 
+## In state 2, spurious reduction of production list(NEWLINE) -> NEWLINE list(NEWLINE) 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+input: IDENTIFIER LBRACKET PROP LBRACE NEWLINE UNDERSCORE ARROW LBRACKET RBRACKET NEWLINE RBRACKET 
+##
+## Ends in an error in state: 78.
+##
+## body_expression -> prop_arguments LBRACE nonempty_list(NEWLINE) match_block_body . RBRACE [ RBRACKET NEWLINE ]
+##
+## The known suffix of the stack is as follows:
+## prop_arguments LBRACE nonempty_list(NEWLINE) match_block_body 
+##
+## WARNING: This example involves spurious reductions.
+## This implies that, although the LR(1) items shown above provide an
+## accurate view of the past (what has been recognized so far), they
+## may provide an INCOMPLETE view of the future (what was expected next).
+## In state 31, spurious reduction of production list(NEWLINE) -> 
+## In state 2, spurious reduction of production list(NEWLINE) -> NEWLINE list(NEWLINE) 
+## In state 77, spurious reduction of production match_block_body -> match_block_clause list(NEWLINE) 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+input: IDENTIFIER LBRACKET PROP LBRACE NEWLINE UNDERSCORE ARROW LBRACKET RBRACKET NEWLINE VARDEC 
+##
+## Ends in an error in state: 75.
+##
+## match_block_body -> match_block_clause nonempty_list(NEWLINE) . match_block_body [ RBRACE ]
+##
+## The known suffix of the stack is as follows:
+## match_block_clause nonempty_list(NEWLINE) 
+##
+## WARNING: This example involves spurious reductions.
+## This implies that, although the LR(1) items shown above provide an
+## accurate view of the past (what has been recognized so far), they
+## may provide an INCOMPLETE view of the future (what was expected next).
+## In state 31, spurious reduction of production nonempty_list(NEWLINE) -> NEWLINE 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+input: IDENTIFIER LBRACKET PROP LBRACE NEWLINE UNDERSCORE ARROW LBRACKET RBRACKET VARDEC 
+##
+## Ends in an error in state: 74.
+##
+## match_block_body -> match_block_clause . list(NEWLINE) [ RBRACE ]
+## match_block_body -> match_block_clause . nonempty_list(NEWLINE) match_block_body [ RBRACE ]
+##
+## The known suffix of the stack is as follows:
+## match_block_clause 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+input: IDENTIFIER LBRACKET PROP LBRACE NEWLINE UNDERSCORE ARROW LBRACKET VARDEC 
+##
+## Ends in an error in state: 63.
+##
+## match_block_clause -> pattern_def ARROW LBRACKET . list(NEWLINE) RBRACKET [ RBRACE NEWLINE ]
+## match_block_clause -> pattern_def ARROW LBRACKET . list(NEWLINE) match_block_clause_body RBRACKET [ RBRACE NEWLINE ]
+##
+## The known suffix of the stack is as follows:
+## pattern_def ARROW LBRACKET 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+input: IDENTIFIER LBRACKET PROP LBRACE NEWLINE UNDERSCORE ARROW VARDEC 
+##
+## Ends in an error in state: 62.
+##
+## match_block_clause -> pattern_def ARROW . LBRACKET list(NEWLINE) RBRACKET [ RBRACE NEWLINE ]
+## match_block_clause -> pattern_def ARROW . LBRACKET list(NEWLINE) match_block_clause_body RBRACKET [ RBRACE NEWLINE ]
+## match_block_clause -> pattern_def ARROW . base_style_thing [ RBRACE NEWLINE ]
+##
+## The known suffix of the stack is as follows:
+## pattern_def ARROW 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+input: IDENTIFIER LBRACKET PROP LBRACE NEWLINE UNDERSCORE VARDEC 
+##
+## Ends in an error in state: 61.
+##
+## match_block_clause -> pattern_def . ARROW LBRACKET list(NEWLINE) RBRACKET [ RBRACE NEWLINE ]
+## match_block_clause -> pattern_def . ARROW LBRACKET list(NEWLINE) match_block_clause_body RBRACKET [ RBRACE NEWLINE ]
+## match_block_clause -> pattern_def . ARROW base_style_thing [ RBRACE NEWLINE ]
+##
+## The known suffix of the stack is as follows:
+## pattern_def 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+input: IDENTIFIER LBRACKET PROP LBRACE NEWLINE VARDEC 
+##
+## Ends in an error in state: 60.
+##
+## body_expression -> prop_arguments LBRACE nonempty_list(NEWLINE) . match_block_body RBRACE [ RBRACKET NEWLINE ]
+##
+## The known suffix of the stack is as follows:
+## prop_arguments LBRACE nonempty_list(NEWLINE) 
+##
+## WARNING: This example involves spurious reductions.
+## This implies that, although the LR(1) items shown above provide an
+## accurate view of the past (what has been recognized so far), they
+## may provide an INCOMPLETE view of the future (what was expected next).
+## In state 31, spurious reduction of production nonempty_list(NEWLINE) -> NEWLINE 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+input: IDENTIFIER LBRACKET PROP LBRACE VARDEC 
+##
+## Ends in an error in state: 59.
+##
+## body_expression -> prop_arguments LBRACE . list(NEWLINE) RBRACE [ RBRACKET NEWLINE ]
+## body_expression -> prop_arguments LBRACE . nonempty_list(NEWLINE) match_block_body RBRACE [ RBRACKET NEWLINE ]
+##
+## The known suffix of the stack is as follows:
+## prop_arguments LBRACE 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+input: IDENTIFIER LBRACKET PROP VARDEC 
+##
+## Ends in an error in state: 8.
+##
+## prop_type -> PROP . EQ prop_type_value [ RBRACKET NEWLINE ]
+## prop_val -> PROP . [ LBRACE ]
+##
+## The known suffix of the stack is as follows:
+## PROP 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+input: IDENTIFIER LBRACKET VARDEC 
+##
+## Ends in an error in state: 6.
+##
+## _class -> IDENTIFIER LBRACKET . list(NEWLINE) class_body RBRACKET [ NEWLINE EOF ]
+##
+## The known suffix of the stack is as follows:
+## IDENTIFIER LBRACKET 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+input: IDENTIFIER VARDEC 
+##
+## Ends in an error in state: 5.
+##
+## _class -> IDENTIFIER . LBRACKET list(NEWLINE) class_body RBRACKET [ NEWLINE EOF ]
+##
+## The known suffix of the stack is as follows:
+## IDENTIFIER 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+input: NEWLINE RBRACKET 
+##
+## Ends in an error in state: 3.
+##
+## input -> list(NEWLINE) . program EOF [ # ]
+##
+## The known suffix of the stack is as follows:
+## list(NEWLINE) 
+##
+## WARNING: This example involves spurious reductions.
+## This implies that, although the LR(1) items shown above provide an
+## accurate view of the past (what has been recognized so far), they
+## may provide an INCOMPLETE view of the future (what was expected next).
+## In state 1, spurious reduction of production list(NEWLINE) -> 
+## In state 2, spurious reduction of production list(NEWLINE) -> NEWLINE list(NEWLINE) 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+input: NEWLINE UNDERSCORE 
+##
+## Ends in an error in state: 1.
+##
+## list(NEWLINE) -> NEWLINE . list(NEWLINE) [ VARDEC RBRACKET PROP LPAREN IDENTIFIER EOF ]
+##
+## The known suffix of the stack is as follows:
+## NEWLINE 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+input: UNDERSCORE 
+##
+## Ends in an error in state: 0.
+##
+## input' -> . input [ # ]
+##
+## The known suffix of the stack is as follows:
+## 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+input: VARDEC NEWLINE RBRACKET 
+##
+## Ends in an error in state: 92.
+##
+## input -> list(NEWLINE) program . EOF [ # ]
+##
+## The known suffix of the stack is as follows:
+## list(NEWLINE) program 
+##
+## WARNING: This example involves spurious reductions.
+## This implies that, although the LR(1) items shown above provide an
+## accurate view of the past (what has been recognized so far), they
+## may provide an INCOMPLETE view of the future (what was expected next).
+## In state 31, spurious reduction of production list(NEWLINE) -> 
+## In state 2, spurious reduction of production list(NEWLINE) -> NEWLINE list(NEWLINE) 
+## In state 99, spurious reduction of production statement_list -> _statement list(NEWLINE) 
+## In state 91, spurious reduction of production option(statement_list) -> statement_list 
+## In state 94, spurious reduction of production program -> option(statement_list) 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+input: VARDEC NEWLINE RPAREN 
+##
+## Ends in an error in state: 31.
+##
+## list(NEWLINE) -> NEWLINE . list(NEWLINE) [ RBRACKET RBRACE EOF ]
+## nonempty_list(NEWLINE) -> NEWLINE . [ VARDEC UNDERSCORE TRUE STRING RANGE PROP LPAREN IDENTIFIER FALSE ]
+## nonempty_list(NEWLINE) -> NEWLINE . nonempty_list(NEWLINE) [ VARDEC UNDERSCORE TRUE STRING RANGE PROP LPAREN IDENTIFIER FALSE ]
+##
+## The known suffix of the stack is as follows:
+## NEWLINE 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+input: VARDEC NEWLINE UNDERSCORE 
+##
+## Ends in an error in state: 96.
+##
+## statement_list -> _statement nonempty_list(NEWLINE) . statement_list [ EOF ]
+##
+## The known suffix of the stack is as follows:
+## _statement nonempty_list(NEWLINE) 
+##
+## WARNING: This example involves spurious reductions.
+## This implies that, although the LR(1) items shown above provide an
+## accurate view of the past (what has been recognized so far), they
+## may provide an INCOMPLETE view of the future (what was expected next).
+## In state 31, spurious reduction of production nonempty_list(NEWLINE) -> NEWLINE 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+input: VARDEC VARDEC 
+##
+## Ends in an error in state: 95.
+##
+## statement_list -> _statement . list(NEWLINE) [ EOF ]
+## statement_list -> _statement . nonempty_list(NEWLINE) statement_list [ EOF ]
+##
+## The known suffix of the stack is as follows:
+## _statement 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+

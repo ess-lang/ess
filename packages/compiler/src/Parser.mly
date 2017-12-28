@@ -1,9 +1,3 @@
-%{
-
-open Utils
-
-%}
-
 %token LBRACE
 %token RBRACE
 %token VARDEC
@@ -38,7 +32,7 @@ input:
   | NEWLINE* s = program EOF { Ast.Stylesheet s }
 
 program:
-  | sl = statement_list? { list_maybe sl }
+  | sl = statement_list? { Utils.list_maybe sl }
 
 statement_list:
   | _statement NEWLINE* { [$1] }
@@ -53,7 +47,7 @@ _class:
     { Ast.ClassDeclaration(id, cb) }
 
 class_body:
-  | body_block? { Ast.ClassBody(list_maybe($1))}
+  | body_block? { Ast.ClassBody(Utils.list_maybe($1))}
 
 body_block:
   | body_expression NEWLINE* { [$1] }
@@ -82,9 +76,9 @@ body_expression:
   | prop_arguments LBRACE NEWLINE+ match_block_body RBRACE
     { Ast.MatchBlockExpression($1, $4) }
   | IDENTIFIER prop_arguments LBRACE NEWLINE* RBRACE
-    { Ast.MatchValueExpression(string_to_property $1, $2, []) }
+    { Ast.MatchValueExpression(Utils.string_to_property $1, $2, []) }
   | IDENTIFIER prop_arguments LBRACE NEWLINE+ match_value_body RBRACE
-    { Ast.MatchValueExpression(string_to_property $1, $2, $5) }
+    { Ast.MatchValueExpression(Utils.string_to_property $1, $2, $5) }
 
 prop_arguments:
   | prop_val { [$1] }
@@ -95,7 +89,7 @@ prop_val:
 
 base_style_thing:
   | IDENTIFIER style_value
-    { Ast.Style(string_to_property $1, $2) }
+    { Ast.Style(Utils.string_to_property $1, $2) }
 
 match_block_body:
   | match_block_clause NEWLINE* { [$1] }

@@ -3,10 +3,26 @@ let compile_from_ast = (ast) : ReactTarget.output => {
   ReactTarget.generate(elements)
 };
 
-let compile = (str: string) : ReactTarget.output => {
-  let lexbuf = Lexing.from_string(str);
-  let parsed = Parser.input(Lexer.token, lexbuf);
-  compile_from_ast(parsed)
+let maybe_log_error = (result) =>
+  switch result {
+  | SheetParser.Success(ast) => Some(compile_from_ast(ast))
+  | SheetParser.Failure(state, offset) =>
+    let msg = ParseErrors.message(state);
+    Js.log({j|Error: $(msg) at offset: $(offset)|j});
+    None
+  | SheetParser.UnknownError(msg) =>
+    Js.log({j|Error: $(msg)|j});
+    None
+  };
+
+let compile = (str: string) : option(ReactTarget.output) => {
+  let result = SheetParser.process(str);
+  maybe_log_error(result)
 };
 
-let compile_js = (str: string) => ReactTarget.outputToJs(compile(str));
+let compile_js = (str: string) =>
+  switch (compile(str)) {
+  | Some(ast) => ReactTarget.outputToJs(ast)
+  | None =>
+    ReactTarget.outputToJs({js_code: "error", flow_def: "error", css: "error"})
+  };
