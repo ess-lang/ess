@@ -1,0 +1,4 @@
+[submodule "compiler/bucklescript"]
+	path = compiler/bucklescript
+	url = git@github.com:rtsao/bucklescript.git
+  branch = lib
