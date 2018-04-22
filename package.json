@@ -2,8 +2,6 @@
   "name": "@ess/monorepo",
   "version": "1.0.0",
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": ["compiler", "example-flow-webpack", "webpack-loader"],
   "license": "MIT"
 }
