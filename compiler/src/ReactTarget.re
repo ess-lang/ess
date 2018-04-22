@@ -1,11 +1,12 @@
-[@bs.module "../../../bs-wrapper.js"] external compile : string => string = "";
-
-[@bs.deriving jsConverter]
 type output = {
   js_code: string,
   flow_def: string,
   css: string
 };
+
+let compile = (str) => Codegen.to_js(str);
+
+let outputToJs = (x) => x.js_code ++ "" ++ x.flow_def ++ "" ++ x.css;
 
 let match_of_styles = (styles, get_name) =>
   Optimizer.ER.fold(
@@ -34,15 +35,13 @@ let ocaml_impl = (elements, table) => {
             },
             el.style_types
           );
-        "let "
-        ++ "c_"
-        ++ el.name
-        ++ " "
-        ++ String.concat(" ", prop_names)
-        ++ " = match ("
-        ++ String.concat(", ", prop_names)
-        ++ ") with "
-        ++ match_of_styles(el.style_table, get_style)
+        Printf.sprintf(
+          {|let c_%s %s = match (%s) with %s|},
+          el.name,
+          List.length(prop_names) > 0 ? String.concat(" ", prop_names) : "()",
+          String.concat(", ", prop_names),
+          match_of_styles(el.style_table, get_style)
+        )
       },
       elements
     );
@@ -67,25 +66,46 @@ let destructured_props = (prop_names) => {
         },
         prop_names
       );
-  List.map((name) => {j|"$(name)"|j}, names)
+  List.map((name) => "(" ++ name ++ ")", names)
 };
 
 let react_class = (name, prop_names) => {
   let prop_string = String.concat(", ", destructured_props(prop_names));
-  {j|exports.$(name) = function $(name)(props) {
-  const c = c_$(name)(props);
-  const rest = objectWithoutProperties(props, $(prop_string));
-  rest.className = rest.className ? rest.className + " " + c : c;
+  Printf.sprintf(
+    {|
+export function %s(props) {
+  const c = c_%s(props);
+  const rest = objectWithoutProperties(props, %s);
+  rest.className = rest.className
+    ? rest.className + " " + c
+    : c;
   return React.createElement(props.element, rest);
-}|j}
+}|},
+    name,
+    name,
+    prop_string
+  )
 };
 
-let js_react_wrapper = (str, elements: list(Optimizer.ER.element)) =>
-  {j|function objectWithoutProperties(source, excluded) {
+let js_react_wrapper = (str, elements: list(Optimizer.ER.element)) => {
+  let asdf =
+    String.concat(
+      "\n",
+      List.map(
+        (element: Optimizer.ER.element) => {
+          let name = element.name;
+          react_class(name, element.style_types)
+        },
+        elements
+      )
+    );
+  Printf.sprintf(
+    {|
+function objectWithoutProperties(source, excluded) {
   if (source == null) return {};
-  var target = {};
-  var sourceKeys = Object.keys(source);
-  var key, i;
+  let target = {};
+  let sourceKeys = Object.keys(source);
+  let key, i;
   for (i = 0; i < sourceKeys.length; i++) {
     key = sourceKeys[i];
     if (excluded.indexOf(key) >= 0) continue;
@@ -93,21 +113,17 @@ let js_react_wrapper = (str, elements: list(Optimizer.ER.element)) =>
   }
   return target;
 }
-|j}
-  ++ "var React = require('react');\n\n"
-  ++ str
-  ++ "\n\n"
-  ++ String.concat(
-       "\n\n",
-       List.map(
-         (element: Optimizer.ER.element) => {
-           let name = element.name;
-           react_class(name, element.style_types)
-         },
-         elements
-       )
-     )
-  ++ "\n";
+
+import React from "react";
+
+%s
+
+%s
+|},
+    str,
+    asdf
+  )
+};
 
 let flow_interface = (elements) => {
   let prefix = "// @flow\n" ++ "import * as React from 'react';\n\n";
@@ -122,11 +138,11 @@ let flow_interface = (elements) => {
             },
             el.style_types
           );
-        "declare export var "
-        ++ el.name
-        ++ ": React.StatelessFunctionalComponent<{|\n  "
-        ++ String.concat(",\n  ", prop_names)
-        ++ "\n|}>;"
+        Printf.sprintf(
+          {z|declare export var %s: React.StatelessFunctionalComponent<{|%s|}>;|z},
+          el.name,
+          String.concat(",\n  ", prop_names)
+        )
       },
       elements
     );

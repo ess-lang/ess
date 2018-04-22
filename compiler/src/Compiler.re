@@ -10,10 +10,17 @@ let maybe_log_error = (result) =>
     let msg = ParseErrors.message(state);
     let line = pos.pos_lnum;
     let col = pos.pos_cnum - pos.pos_bol + 1;
-    Js.log({j|Error: $(msg) at $(line):$(col)|j});
+    print_endline(
+      "Error: "
+      ++ msg
+      ++ " at "
+      ++ string_of_int(line)
+      ++ " : "
+      ++ string_of_int(col)
+    );
     None
   | SheetParser.UnknownError(msg) =>
-    Js.log({j|Error: $(msg)|j});
+    print_endline("Error: " ++ msg);
     None
   };
 

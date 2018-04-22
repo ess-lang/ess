@@ -1,5 +1,5 @@
 
-(* This file was auto-generated based on "/Users/rtsao/Development/ess/packages/compiler/src/Parser.messages". *)
+(* This file was auto-generated based on "/Users/rtsao/Development/ess/compiler/src/Parser.messages". *)
 
 (* Please note that the function [message] can raise [Not_found]. *)
 
