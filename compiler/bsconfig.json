@@ -2,8 +2,12 @@
   "name": "ess",
   "refmt": 3,
   "bsc-flags": ["-bs-super-errors"],
-  "static-libraries": ["bucklescript/jscomp/stubs/ext_basic_hash_stubs.c"],
-  "ocamlfind-dependencies": ["menhirlib"],
+  "ocamlfind-dependencies": [
+    "menhirlib",
+    "visitors.ppx",
+    "visitors.runtime",
+    "ppx_deriving"
+  ],
   "entries": [
     {
       "backend": "native",
@@ -11,7 +15,6 @@
     }
   ],
   "sources": [
-    {"dir": "bucklescript/lib", "files": ["whole_compiler_lib.ml"]},
     {
       "dir": "src",
       "generators": [
@@ -22,14 +25,6 @@
         {
           "name": "menhir",
           "edge": ["Parser.ml", "Parser.mli", ":", "Parser.mly"]
-        },
-        {
-          "name": "menhir2",
-          "edge": ["Parser.messages", ":", "Parser.mly"]
-        },
-        {
-          "name": "menhir3",
-          "edge": ["ParseErrors.ml", ":", "Parser.messages"]
         }
       ]
     }
@@ -42,15 +37,6 @@
     {
       "name": "menhir",
       "command": "menhir --explain --table $in"
-    },
-    {
-      "name": "menhir2",
-      "command": "menhir $in --update-errors $out | sponge $out"
-    },
-    {
-      "name": "menhir3",
-      "command":
-        "menhir $src_root_dir/src/Parser.mly --compile-errors $in >| $out"
     }
   ]
 }

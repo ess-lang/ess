@@ -6,11 +6,13 @@
 %token LBRACKET
 %token RBRACKET
 %token COMMA
+%token COLON
 %token PIPE
 %token BOOLEAN
 %token TRUE FALSE
 %token NEWLINE
 %token UNDERSCORE
+
 %token EQ
 %token <int * int option>RANGE
 %token PIXEL
@@ -18,6 +20,7 @@
 %token <int * int * int>COLOR_HEX
 %token ARROW
 %token <string>IDENTIFIER
+%token <string>ELEMENT_ID
 %token <string>PROP
 %token <string>STRING
 
@@ -35,100 +38,120 @@ program:
   | sl = statement_list? { Utils.list_maybe sl }
 
 statement_list:
-  | _statement NEWLINE* { [$1] }
-  | _statement NEWLINE+ statement_list { $1 :: $3 }
+  | s = _statement NEWLINE* { [s] }
+  | s = _statement NEWLINE+ sl = statement_list { s :: sl }
 
 _statement:
-  | _class { $1 }
-  | VARDEC { Ast.VariableDeclaration("some-var", Ast.Px(20.0)) }
+  | e = element { e }
 
-_class:
-  | id = IDENTIFIER LBRACKET NEWLINE* cb = class_body RBRACKET
-    { Ast.ClassDeclaration(id, cb) }
+element:
+  | id = ELEMENT_ID  b = block
+    { Ast.ElementDeclaration(($startpos, $endpos), id, [], b) }
 
-class_body:
-  | body_block? { Ast.ClassBody(Utils.list_maybe($1))}
+block:
+  | LBRACKET NEWLINE* br = block_rules? RBRACKET
+    { Ast.Block(($startpos, $endpos), Utils.list_maybe(br)) }
 
-body_block:
-  | body_expression NEWLINE* { [$1] }
-  | body_expression NEWLINE+ body_block { $1 :: $3 }
+block_rules:
+  | e = block_entry { [e] }
+  | e = block_entry b = block_rules { e :: b }
 
-prop_type:
-  | p = PROP EQ ptv = prop_type_value
-    { Ast.ClassPropDeclaration(Ast.Argument(p), ptv) }
+block_entry:
+  | r = rule NEWLINE* { r }
+  | r = rule COMMA NEWLINE* { r }
+  | r = rule NEWLINE+ COMMA NEWLINE* { r }
 
-prop_type_value:
-  | ls = separated_nonempty_list(PIPE, STRING)
-    { Ast.StringEnumType(ls) }
-  | BOOLEAN
-    { Ast.BooleanType }
+rule:
+  | r = attribute_rule { r }
+  | r = composition_rule { r }
+  | r = match_rule { r }
 
-style_value:
-  | COLOR_HEX { Ast.ColorRGB($1) }
-  | COLOR_SHORTHEX { Ast.ColorRGB($1) }
-  | IDENTIFIER { Ast.StringLiteral($1) }
+attribute_rule:
+  | attr = IDENTIFIER exp = expression { Ast.AttributeRule(($startpos, $endpos), attr, exp) }
 
-body_expression:
-  | prop_type { $1 }
-  | base_style_thing { Ast.StyleExpression($1) }
-  | prop_arguments LBRACE NEWLINE* RBRACE
-    { Ast.MatchBlockExpression($1, []) }
-  | prop_arguments LBRACE NEWLINE+ match_block_body RBRACE
-    { Ast.MatchBlockExpression($1, $4) }
-  | IDENTIFIER prop_arguments LBRACE NEWLINE* RBRACE
-    { Ast.MatchValueExpression(Utils.string_to_property $1, $2, []) }
-  | IDENTIFIER prop_arguments LBRACE NEWLINE+ match_value_body RBRACE
-    { Ast.MatchValueExpression(Utils.string_to_property $1, $2, $5) }
+composition_rule:
+  | id = ELEMENT_ID { Ast.CompositionRule(($startpos, $endpos), id) }
 
-prop_arguments:
-  | prop_val { [$1] }
-  | delimited(LPAREN, separated_nonempty_list(COMMA, prop_val), RPAREN) { $1 }
+match_rule:
+  | parameter_list LBRACE NEWLINE* RBRACE
+    { Ast.MatchRule(($startpos, $endpos), $1, []) }
+  | parameter_list LBRACE NEWLINE+ match_rule_body RBRACE
+    { Ast.MatchRule(($startpos, $endpos), $1, $4) }
 
-prop_val:
-  | PROP { Ast.Argument($1) }
+match_rule_body:
+  | match_rule_clause NEWLINE* { [$1] }
+  | match_rule_clause NEWLINE+ match_rule_body { $1 :: $3 }
 
-base_style_thing:
-  | IDENTIFIER style_value
-    { Ast.Style(Utils.string_to_property $1, $2) }
+match_rule_clause:
+  | p = pattern_def ARROW b = block COMMA?
+    { Ast.MatchRuleClause(($startpos, $endpos), p, b) }
 
-match_block_body:
-  | match_block_clause NEWLINE* { [$1] }
-  | match_block_clause NEWLINE+ match_block_body { $1 :: $3 }
+expression:
+  | e = plain_expression { e }
+  | e = match_expression { e }
+  | e = record_expression { e }
+  | LPAREN e = expression RPAREN { e }
 
-match_value_body:
-  | match_value_clause NEWLINE* { [$1] }
-  | match_value_clause NEWLINE+ match_value_body { $1 :: $3 }
+plain_expression:
+  | IDENTIFIER { Ast.LiteralExpression(($startpos, $endpos)) }
 
-match_value_clause:
-  | pattern_def ARROW style_value
-    { Ast.MatchValueClause($1, $3) }
+record_expression:
+  | LPAREN e = record_entries? RPAREN
+    { Ast.RecordExpression(($startpos, $endpos), Utils.list_maybe(e)) }
+  | LPAREN NEWLINE+ e = record_entries RPAREN
+    { Ast.RecordExpression(($startpos, $endpos), e) }
+  | LPAREN NEWLINE+ RPAREN
+    { Ast.RecordExpression(($startpos, $endpos), []) }
 
-match_block_clause:
-  | pattern_def ARROW LBRACKET NEWLINE* RBRACKET
-    { Ast.MatchBlockClause($1, []) }
-  | pattern_def ARROW LBRACKET NEWLINE* match_block_clause_body RBRACKET
-    { Ast.MatchBlockClause($1, $5) }
-  | pattern_def ARROW base_style_thing
-    { Ast.MatchBlockClause($1, [$3]) }
+record_entries:
+  | f = record_entry { [f] }
+  | f = record_entry c = record_entries { f :: c }
+
+record_entry:
+  | r = record_field NEWLINE* { r }
+  | r = record_field COMMA NEWLINE* { r }
+  | r = record_field NEWLINE+ COMMA NEWLINE* { r }
+
+record_field:
+  | f = IDENTIFIER NEWLINE* COLON NEWLINE* v = IDENTIFIER
+    { Ast.RecordField(($startpos, $endpos), f, Ast.TextLiteral($startpos, $endpos))}
+
+match_expression:
+  | parameter_list LBRACE NEWLINE* RBRACE
+    { Ast.MatchExpression(($startpos, $endpos), $1, []) }
+  | parameter_list LBRACE NEWLINE+ match_expression_body RBRACE
+    { Ast.MatchExpression(($startpos, $endpos), $1, $4) }
+
+match_expression_body:
+  | match_expression_clause NEWLINE* { [$1] }
+  | match_expression_clause NEWLINE+ match_expression_body { $1 :: $3 }
+
+match_expression_clause:
+  | pattern_def ARROW expression
+    { Ast.MatchExpressionClause(($startpos, $endpos), $1, $3) }
+
+parameter_list:
+  | parameter { [$1] }
+  | delimited(LPAREN, separated_nonempty_list(COMMA, parameter), RPAREN) { $1 }
+
+parameter:
+  | PROP { Ast.Parameter(($startpos, $endpos), $1) }
 
 pattern_def:
-  | pattern { [$1] }
+  | p = pattern { [p] }
   | p = delimited(LPAREN, separated_nonempty_list(COMMA, pattern), RPAREN) { p }
 
 pattern:
   | ls = separated_nonempty_list(PIPE, STRING)
-    { Ast.StringPattern(ls) }
+    { Ast.StringPattern(($startpos, $endpos), ls) }
   | TRUE
-    { Ast.BooleanPattern(true) }
+    { Ast.BooleanPattern(($startpos, $endpos), true) }
   | FALSE
-    { Ast.BooleanPattern(false) }
+    { Ast.BooleanPattern(($startpos, $endpos), false) }
   | RANGE
-    { Ast.NumberRangePattern($1) }
+    { Ast.NumberRangePattern(($startpos, $endpos), $1) }
   | UNDERSCORE
-    { Ast.FallthroughPattern }
+    { Ast.FallthroughPattern(($startpos, $endpos)) }
 
-match_block_clause_body:
-  | base_style_thing NEWLINE* { [$1] }
-  | base_style_thing NEWLINE+ match_block_clause_body { $1 :: $3 }
 
 %%

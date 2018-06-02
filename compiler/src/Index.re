@@ -1,16 +1,44 @@
-let str = {|Bar [
-  @foo = "hello" | "world" | "woah"
-  @bar = boolean
-
-  color @foo {
-    "world" | "woah" => #0000ff
-    "hello" => #000000
-  }
+let str = {|
+Baz100 [
+  Other1
+  ,
+  @foo {
+    true => [Other2,Other3],
+    false => [
+      Other4
+      Other5
+    ],
+    (true, false) => [Other6],
+  },
+  Other7,
 ]
 
 Baz [
-  color #00ff00
+  blah asdf
+  foo (@foo {
+    true => @foo {
+      true => green
+    }
+  })
+  Other8,
+  arbitrary (
+    hello: world,
+    hello2: world2,
+    hello3: world3
+
+  )
+  asdf (
+
+
+  )
 ]
+
+Bar [
+  background @foo {
+    true => red
+  }
+]
+
 |};
 
 let result = SheetParser.process(str);
@@ -18,24 +46,10 @@ let result = SheetParser.process(str);
 Compiler.maybe_log_error(result);
 
 switch result {
-| SheetParser.Success(parsed) =>
-  let elements = Optimizer.things_of_stylesheet(parsed);
-  List.iter(
-    (el: Optimizer.ER.element) => {
-      print_endline("========================");
-      print_endline("Element: " ++ el.name);
-      print_endline(Optimizer.ER.to_string(el.style_table));
-      print_endline("")
-    },
-    elements
-  );
-  let {css, js_code, flow_def}: ReactTarget.output =
-    Compiler.compile_from_ast(parsed);
-  print_endline("==== CSS ====");
-  print_endline(css);
-  print_endline("==== JS ====");
-  print_endline(js_code);
-  print_endline("==== FLOW ====");
-  print_endline(flow_def)
+| SheetParser.Success(parsed) => {
+  let yo = Typecheck.typecheck(parsed);
+  print_endline(string_of_int(yo));
+  print_endline("dope!")
+}
 | _ => ()
 };

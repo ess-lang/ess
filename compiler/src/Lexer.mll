@@ -20,11 +20,15 @@ let hex = ['A'-'F' 'a'-'f' '0'-'9']
 
 let alpha = ['A'-'Z' '-' 'a'-'z']
 
+let id_chars = ['A'-'Z' '_' 'a'-'z' '0' - '9']
+let attr_chars = ['a'-'z' '-']
+
 rule token = parse
   | '\n' { Lexing.new_line lexbuf; NEWLINE }
   | '_' { UNDERSCORE }
   | '=' '>' { ARROW }
   | '=' { EQ }
+  | ':' { COLON }
   | ',' { COMMA }
   | '{' { LBRACE }
   | '}'  { RBRACE }
@@ -41,7 +45,8 @@ rule token = parse
   | "false" { FALSE }
   | "true" { TRUE }
   | '"' (['a'-'z']+ as str) '"' { STRING(str) }
-  | alpha+    { IDENTIFIER (get lexbuf) }
+  | ['A'-'Z']+ id_chars* { ELEMENT_ID(get lexbuf) }
+  | attr_chars+ { IDENTIFIER(get lexbuf) }
   | ['0'-'9']+ "px" { PIXEL }
   | (['0'-'9']+ as start_num)'.' '.' (['0'-'9']* as end_num)
     { RANGE(int_of_string start_num, int_of_maybe_string end_num) }

@@ -1,66 +1,45 @@
+type loc = (Lexing.position, Lexing.position);
+
+[@deriving visitors({variety: "iter"})]
 type stylesheet =
   | Stylesheet(list(statement))
 and statement =
-  | ClassDeclaration(string, class_body)
-  | VariableDeclaration(string, style_value)
-and class_body =
-  | ClassBody(list(class_body_expression))
-and class_body_expression =
-  | ClassPropDeclaration(argument, prop_value_type)
-  | StyleExpression(style)
-  | MatchBlockExpression(list(argument), list(match_block_clause))
-  | MatchValueExpression(
-      style_property,
-      list(argument),
-      list(match_value_clause)
-    )
-and match_block_clause =
-  | MatchBlockClause(list(pattern), list(style))
-and match_value_clause =
-  | MatchValueClause(list(pattern), style_value)
-and style =
-  | Style(style_property, style_value)
+  | ElementDeclaration([@opaque] loc, string, list(parameter), block)
+  | VariableDeclaration([@opaque] loc)
+and block =
+  | Block([@opaque] loc, list(rule))
+and rule =
+  | AttributeRule([@opaque] loc, string, expression)
+  | CompositionRule([@opaque] loc, string)
+  | MatchRule([@opaque] loc, list(parameter), list(match_rule_clause))
+and expression =
+  | MatchExpression([@opaque] loc, list(parameter), list(match_expression_clause))
+  | RecordExpression([@opaque] loc, list(record_field))
+  | LiteralExpression([@opaque] loc)
+  | UnknownExpression([@opaque] loc)
+and record_field =
+  | RecordField([@opaque] loc, string, literal)
+/* need to type check named expression assignment. Must only be primitive value */
+and literal =
+  | ReferenceLiteral([@opaque] loc)
+  | TextLiteral([@opaque] loc)
+  | HexLiteral([@opaque] loc)
+  | PixelLiteral([@opaque] loc)
+  | PercentLiteral([@opaque] loc)
+  | NumberLiteral([@opaque] loc)
+and match_rule_clause =
+  | MatchRuleClause([@opaque] loc, list(pattern), block)
+and match_expression_clause =
+  | MatchExpressionClause([@opaque] loc, list(pattern), expression)
 and prop_value_type =
-  | StringEnumType(list(string))
-  | BooleanType
-  | NumberType
-and argument =
-  | Argument(string)
-and style_property =
-  | ColorProperty
-  | BackgroundProperty
-  | PaddingProperty
-  | BorderProperty
-  | LineHeightProperty
-  | UnknownProperty(string)
-and style_value =
-  | Px(float)
-  | Em(float)
-  | StringLiteral(string)
-  | ColorRGB((int, int, int))
-  | ColorNamed(string)
-  | VariableReference
-  | ValueExpression
-  | UnknownValue(string)
+  | StringEnumType([@opaque] loc, list(string))
+  | BooleanType([@opaque] loc)
+  | NumberType([@opaque] loc)
+and parameter =
+  | Parameter([@opaque] loc, string)
 and pattern =
-  | NumberPattern(int)
-  | NumberRangePattern((int, option(int)))
-  | BooleanPattern(bool)
-  | StringPattern(list(string))
-  | FallthroughPattern;
-/* let string_of_statement = (n) =>
-     switch n {
-     | ClassDeclaration(x, y) => "classdecl"
-     | VariableDeclaration(x, y) => "variable"
-     };
-
-   let rec string_of_statement_list = (n) =>
-     switch n {
-     | [] => "empty"
-     | [a, ...rest] => string_of_statement(a) ++ string_of_statement_list(rest)
-     };
-
-   let string_of_stylesheet = (n) =>
-     switch n {
-     | Stylesheet(x) => string_of_statement_list(x)
-     }; */
+  | NumberPattern([@opaque] loc, int)
+  | NumberRangePattern([@opaque] loc, (int, option(int)))
+  | BooleanPattern([@opaque] loc, bool)
+  | StringPattern([@opaque] loc, list(string))
+  | FallthroughPattern([@opaque] loc);
