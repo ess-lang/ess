@@ -45,11 +45,10 @@ let result = SheetParser.process(str);
 
 Compiler.maybe_log_error(result);
 
-switch result {
-| SheetParser.Success(parsed) => {
+switch (result) {
+| SheetParser.Success(parsed) =>
   let yo = Typecheck.typecheck(parsed);
   print_endline(string_of_int(yo));
-  print_endline("dope!")
-}
+  print_endline("dope!");
 | _ => ()
 };

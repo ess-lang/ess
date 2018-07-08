@@ -15,7 +15,7 @@ type margin = {
   top: margin_value,
   right: margin_value,
   bottom: margin_value,
-  left: margin_value
+  left: margin_value,
 }
 and margin_value =
   | Margin(length);

@@ -1,12 +1,9 @@
 type numy =
   | Foo
   | Bar
-  | Baz
-  ;
+  | Baz;
 
-type thingy = {
-  asdf: numy
-};
+type thingy = {asdf: numy};
 
 let typecheck = (e: Ast.stylesheet) : int => {
   let v = {
@@ -17,21 +14,21 @@ let typecheck = (e: Ast.stylesheet) : int => {
     pub! visit_AttributeRule = (env, e0, e1) => {
       count = count + 1;
       print_endline(e1);
-      let yolo =  switch (e1) {
+      let yolo =
+        switch (e1) {
         | "foo" => Baz
         | "blah" => Bar
         | _ => Foo
-      };
+        };
 
       super#visit_AttributeRule({asdf: yolo}, e0, e1);
     };
     pub! visit_expression = (env, x) => {
-
       /* pattern match against value types, based on env */
       switch (env.asdf) {
-        | Foo => print_endline("expression: Foo")
-        | Bar => print_endline("expression: Bar")
-        | Baz => print_endline("expression: Baz")
+      | Foo => print_endline("expression: Foo")
+      | Bar => print_endline("expression: Bar")
+      | Baz => print_endline("expression: Baz")
       };
       super#visit_expression(env, x);
     }

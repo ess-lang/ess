@@ -13,7 +13,11 @@ and rule =
   | CompositionRule([@opaque] loc, string)
   | MatchRule([@opaque] loc, list(parameter), list(match_rule_clause))
 and expression =
-  | MatchExpression([@opaque] loc, list(parameter), list(match_expression_clause))
+  | MatchExpression(
+      [@opaque] loc,
+      list(parameter),
+      list(match_expression_clause),
+    )
   | RecordExpression([@opaque] loc, list(record_field))
   | LiteralExpression([@opaque] loc)
   | UnknownExpression([@opaque] loc)

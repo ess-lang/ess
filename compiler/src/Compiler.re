@@ -1,7 +1,5 @@
-
-
-let maybe_log_error = (result) =>
-  switch result {
+let maybe_log_error = result =>
+  switch (result) {
   | SheetParser.Success(ast) => print_endline("success")
   | SheetParser.Failure(state, pos) =>
     let msg = "FAKE";
@@ -14,9 +12,7 @@ let maybe_log_error = (result) =>
       ++ " at "
       ++ string_of_int(line)
       ++ ":"
-      ++ string_of_int(col)
+      ++ string_of_int(col),
     );
-  | SheetParser.UnknownError(msg) =>
-    print_endline("Error: " ++ msg);
-
+  | SheetParser.UnknownError(msg) => print_endline("Error: " ++ msg)
   };
