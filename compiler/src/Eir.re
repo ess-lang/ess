@@ -1,26 +1,32 @@
 /* ESS Intermediate Representation */
+module SS = Set.Make(String);
+module SM = Map.Make(String);
 
-type attribute =
+type param_type =
+  | StringEnumType(SS.t)
+  | NumberType
+  | BooleanType
+and element_body = {interface: SM.t(param_type)}
+and node =
+  | Element(element_body)
+and attribute =
   | BorderAttribute
   | PaddingAttribute
   | MarginAttribute
-  | BackgroundAttribute;
-
-type color =
+  | BackgroundAttribute
+and color =
   | RGBA(int, int, int, int)
 and length =
-  | Px(float);
-
-type margin = {
+  | Px(float)
+and margin = {
   top: margin_value,
   right: margin_value,
   bottom: margin_value,
   left: margin_value,
 }
 and margin_value =
-  | Margin(length);
-
-type border = {
+  | Margin(length)
+and border = {
   top: border_value,
   right: border_value,
   bottom: border_value,

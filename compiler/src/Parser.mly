@@ -45,8 +45,29 @@ _statement:
   | e = element { e }
 
 element:
-  | id = ELEMENT_ID  b = block
-    { Ast.ElementDeclaration(($startpos, $endpos), id, [], b) }
+  | id = ELEMENT_ID ep = element_params_specifier? b = block
+    { Ast.ElementDeclaration(($startpos, $endpos), id, Utils.list_maybe(ep), b) }
+
+element_params_specifier:
+  | LPAREN NEWLINE* RPAREN
+    { [] }
+  | LPAREN e = element_params RPAREN
+    { e }
+  | LPAREN NEWLINE+ e = element_params RPAREN
+    { e }
+
+element_params:
+  | f = element_param { [f] }
+  | f = element_param c = element_params { f :: c }
+
+element_param:
+  | r = element_param_entry NEWLINE* { r }
+  | r = element_param_entry COMMA NEWLINE* { r }
+  | r = element_param_entry NEWLINE+ COMMA NEWLINE* { r }
+
+element_param_entry:
+  | p = parameter NEWLINE* COLON NEWLINE* parameter_typedef
+    { p }
 
 block:
   | LBRACKET NEWLINE* br = block_rules? RBRACKET
@@ -135,7 +156,7 @@ parameter_list:
   | delimited(LPAREN, separated_nonempty_list(COMMA, parameter), RPAREN) { $1 }
 
 parameter:
-  | PROP { Ast.Parameter(($startpos, $endpos), $1) }
+  | p = PROP { Ast.Parameter(($startpos, $endpos), p) }
 
 pattern_def:
   | p = pattern { [p] }
@@ -153,5 +174,10 @@ pattern:
   | UNDERSCORE
     { Ast.FallthroughPattern(($startpos, $endpos)) }
 
+parameter_typedef:
+  | ls = separated_nonempty_list(PIPE, STRING)
+    { Ast.StringPattern(($startpos, $endpos), ls) }
+  | BOOLEAN
+    { Ast.FallthroughPattern(($startpos, $endpos)) }
 
 %%

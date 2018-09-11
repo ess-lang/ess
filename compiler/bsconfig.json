@@ -3,10 +3,15 @@
   "refmt": 3,
   "bsc-flags": ["-bs-super-errors"],
   "ocamlfind-dependencies": [
+    "lwt",
+    "lwt.unix",
+    "lwt.ppx",
     "menhirlib",
     "visitors.ppx",
     "visitors.runtime",
-    "ppx_deriving"
+    "ppx_deriving",
+    "yojson",
+    "ppx_deriving_yojson"
   ],
   "entries": [
     {

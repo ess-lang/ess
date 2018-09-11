@@ -89,12 +89,12 @@ let print_files = (files: list(string)) =>
     files,
   );
 
-let rec handle_changed_files = (stream, handler) : Lwt.t(_) => {
+let rec handle_changed_files = (stream, dir, handler) : Lwt.t(_) => {
   let%lwt line = Lwt_stream.last_new(stream);
   let res = subscription_message_of_str(line);
   let changed = List.map(file => Filename.concat(res.root, file), res.files);
-  handler(changed);
-  handle_changed_files(stream, handler);
+  handler(changed, dir);
+  handle_changed_files(stream, dir, handler);
 };
 
 let read_line = ch => {
@@ -143,7 +143,7 @@ let startup_watchman = dir => {
   Lwt.return((io, watch_res));
 };
 
-let query = dir => {
+let query = (dir, handler) => {
   let%lwt (io, watch_res) = startup_watchman(dir);
   let%lwt query_res =
     send_query(
@@ -156,11 +156,17 @@ let query = dir => {
         fields: ["name"],
       },
     );
-  print_files(query_res.files);
-  Lwt.return();
+
+  let files =
+    List.map(
+      file => Filename.concat(watch_res.watch, file),
+      query_res.files,
+    );
+
+  handler(files, dir);
 };
 
-let watch = dir => {
+let watch = (dir, handler) => {
   let%lwt (io, watch_res) = startup_watchman(dir);
   let%lwt sub_res =
     send_subscribe(
@@ -182,13 +188,13 @@ let watch = dir => {
       let res = subscription_message_of_str(line);
       let files =
         List.map(file => Filename.concat(res.root, file), res.files);
-      print_endline("starting files");
-      print_files(files);
+      Lwt_io.printf("starting files:\n");
+      handler(files, dir);
     },
     avail,
   );
-  handle_changed_files(stream, print_files);
+  handle_changed_files(stream, dir, handler);
 };
 
-let run_watch = () => Lwt_main.run(watch(Sys.getcwd()));
-let run_query = () => Lwt_main.run(query(Sys.getcwd()));
+let run_watch = handler => Lwt_main.run(watch(Sys.getcwd(), handler));
+let run_query = handler => Lwt_main.run(query(Sys.getcwd(), handler));

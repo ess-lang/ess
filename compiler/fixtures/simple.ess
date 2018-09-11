@@ -1,0 +1,11 @@
+Button (
+  @foo: boolean
+) [
+  @foo {
+    true => [color red],
+    false => [
+      color blue
+      color green
+    ],
+  },
+]
