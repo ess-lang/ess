@@ -3,3 +3,4 @@
 /src/Parser.ml
 /src/Lexer.ml
 Parser.conflicts
+/fixtures/*.ess.js

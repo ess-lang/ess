@@ -2,7 +2,7 @@ const resolvePkg = require('resolve-pkg');
 const fs = require('fs');
 const path = require('path');
 
-const bsPath = resolvePkg('bs-platform', {cwd: __dirname});
+const bsPath = resolvePkg('bsb-native', {cwd: __dirname});
 
 const files = ['cmi', 'cmj', 'cmt', 'cmti', 'ml', 'mli'].map(
   ext => `pervasives.${ext}`,
