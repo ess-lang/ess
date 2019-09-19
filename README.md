@@ -59,6 +59,7 @@ I hope ESS can eventually serve as a useful reference implementation of a produc
 To that end, my goal is for ESS to have all the expected bells and whistles of a modern language including:
 - IDE integration via LSP
 - Automatic AST-based code formatting like [prettier](https://github.com/prettier/prettier) or refmt
+- Syntax highlighting via [tree-sitter](https://github.com/tree-sitter/tree-sitter) grammar
 - Fast, native build performance
 - Web-based REPL-like playground
 - Human-friendly compiler errors
